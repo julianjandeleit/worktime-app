@@ -1,27 +1,30 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:work_time_app/firebase_options.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+
+import 'firebase_options.dart';
+import 'login.dart';
+import 'workspace.dart';
 
 void main() async {
-  await dotenv.load(); // Load environment variables from .env file
-
   WidgetsFlutterBinding.ensureInitialized();
-  await Firebase.initializeApp(
-    options: FirebaseOptions(
-      apiKey: dotenv.env['FIREBASE_API_KEY']!,
-      authDomain: dotenv.env['FIREBASE_AUTH_DOMAIN']!,
-      projectId: dotenv.env['FIREBASE_PROJECT_ID']!,
-      storageBucket: dotenv.env['FIREBASE_STORAGE_BUCKET']!,
-      messagingSenderId: dotenv.env['FIREBASE_MESSAGING_SENDER_ID']!,
-      appId: dotenv.env['FIREBASE_APP_ID']!,
-    ),
-  );
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
-  runApp(WorkTimeApp());
+  GoogleSignIn googleSignIn = GoogleSignIn(
+      scopes: ['email'],
+      clientId: DefaultFirebaseOptions.currentPlatform.appId);
+
+  var fo = DefaultFirebaseOptions.currentPlatform;
+  print("client id ${fo.apiKey} ${fo.apiKey}");
+  runApp(WorkTimeApp(googleSignIn: googleSignIn));
 }
 
 class WorkTimeApp extends StatelessWidget {
+  final GoogleSignIn googleSignIn;
+
+  WorkTimeApp({required this.googleSignIn});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -29,42 +32,11 @@ class WorkTimeApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: HomeScreen(),
-    );
-  }
-}
-
-class HomeScreen extends StatelessWidget {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-
-  // Example function for anonymous sign-in
-  Future<void> signInAnonymously() async {
-    try {
-      await _auth.signInAnonymously();
-      print("Anonymous sign-in successful!");
-    } catch (error) {
-      print("Error during anonymous sign-in: $error");
-    }
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Screen'),
-      ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text('Welcome to WorkTime App'),
-            ElevatedButton(
-              onPressed: signInAnonymously,
-              child: Text('Sign In Anonymously'),
-            ),
-          ],
-        ),
-      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => AuthScreen(),
+        '/main': (context) => MainScreen(),
+      },
     );
   }
 }

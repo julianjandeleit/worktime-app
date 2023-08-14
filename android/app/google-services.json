@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "99195584485",
+    "project_id": "worktime-om",
+    "storage_bucket": "worktime-om.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:99195584485:android:85ae81321c43972dd7390c",
+        "android_client_info": {
+          "package_name": "com.example.work_time_app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "99195584485-tu4g2a2pqcoe1v7fkvfto6j1j58e18la.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDnjnb9WlPeuzUMEWoHv7LX0bUukHdimL4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "99195584485-3594igo4ur5e6s7epls6krfc19937vre.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
