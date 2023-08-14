@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:work_time_app/firebase_options.dart';
@@ -9,14 +10,18 @@ import 'workspace.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // Configure authentication persistence
+  // somehow makes freeze on startup
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
+  await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
 
   GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: ['email'],
       clientId: DefaultFirebaseOptions.currentPlatform.appId);
 
   var fo = DefaultFirebaseOptions.currentPlatform;
-  print("client id ${fo.apiKey} ${fo.apiKey}");
+  //print("client id ${fo.apiKey} ${fo.apiKey}");
   runApp(WorkTimeApp(googleSignIn: googleSignIn));
 }
 
