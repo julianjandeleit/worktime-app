@@ -1,28 +1,30 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:work_time_app/firebase_options.dart';
+import 'package:provider/provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-
-import 'firebase_options.dart';
+import 'package:work_time_app/firebase_options.dart';
+import 'package:work_time_app/viewmodels/ProjectViewModel.dart';
+import 'userDataProvider.dart';
 import 'login.dart';
 import 'workspace.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-
-  // Configure authentication persistence
-  // somehow makes freeze on startup
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await FirebaseAuth.instance.setPersistence(Persistence.LOCAL);
 
-  GoogleSignIn googleSignIn = GoogleSignIn(
+  final GoogleSignIn googleSignIn = GoogleSignIn(
       scopes: ['email'],
       clientId: DefaultFirebaseOptions.currentPlatform.appId);
 
-  var fo = DefaultFirebaseOptions.currentPlatform;
-  //print("client id ${fo.apiKey} ${fo.apiKey}");
-  runApp(WorkTimeApp(googleSignIn: googleSignIn));
+  runApp(
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserDataProvider()),
+        ChangeNotifierProvider(create: (_) => ProjectViewModel())
+      ],
+      child: WorkTimeApp(googleSignIn: googleSignIn),
+    ),
+  );
 }
 
 class WorkTimeApp extends StatelessWidget {
@@ -37,10 +39,10 @@ class WorkTimeApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/main',
       routes: {
         '/': (context) => AuthScreen(),
-        '/main': (context) => MainScreen(),
+        '/main': (context) => Workspace(),
       },
     );
   }

@@ -1,52 +1,48 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:provider/provider.dart';
+import 'viewmodels/ProjectViewModel.dart'; // Update the import path based on your project structure
+import 'views/ProjectView.dart'; // Update the import path based on your project structure
 
-class MainScreen extends StatefulWidget {
-  @override
-  _MainScreenState createState() => _MainScreenState();
-}
-
-class _MainScreenState extends State<MainScreen> {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  User? _user;
-
-  @override
-  void initState() {
-    super.initState();
-    _auth.authStateChanges().listen((user) {
-      setState(() {
-        _user = user;
-      });
-    });
-  }
-
+class Workspace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final projectViewModel = Provider.of<ProjectViewModel>(context);
+    print(projectViewModel.projects);
     return Scaffold(
       appBar: AppBar(
-        title: Text('Main Screen'),
+        title: Text('Workspace'),
         actions: [
           IconButton(
             onPressed: () {
-              _auth.signOut();
-              Navigator.pushNamedAndRemoveUntil(context, '/', (route) => false);
+              // Perform any actions you want here
             },
-            icon: Icon(Icons.logout),
+            icon: Icon(Icons.more_vert),
           ),
         ],
       ),
-      body: Center(
-        child: _user != null
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text('Logged in'),
-                  Text('UserID: ${_user!.uid}'),
-                  Text('Username: ${_user!.displayName ?? 'N/A'}'),
-                ],
-              )
-            : CircularProgressIndicator(),
+      body: Column(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'Your Projects',
+              style: TextStyle(
+                fontSize: 24,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+          Expanded(
+            child: ProjectView(projectViewModel: projectViewModel),
+          ),
+        ],
       ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: () {
+      //     // Add project creation logic here
+      //   },
+      //   child: Icon(Icons.add),
+      // ),
     );
   }
 }
