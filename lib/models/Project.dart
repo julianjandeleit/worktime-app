@@ -1,6 +1,7 @@
+import '../util/serializable.dart';
 import 'WorkSession.dart';
 
-class Project {
+class Project implements Serializable {
   final String name;
   final List<WorkSession> workSessions;
 
@@ -9,20 +10,21 @@ class Project {
     required this.workSessions,
   });
 
-  Project.fromJson(Map<String, dynamic> json)
-      : name = json['name'],
-        workSessions = (json['workSessions'] as List)
-            .map((session) => WorkSession(
-                  startTime: DateTime.parse(session['startTime']),
-                  endTime: DateTime.parse(session['endTime']),
-                ))
-            .toList();
+  @override
+  Map<String, dynamic> toMap() {
+    return {
+      'name': name,
+      'workSessions': workSessions.map((ws) => ws.toMap()).toList(),
+    };
+  }
 
-  Map<String, dynamic> toJson() => {
-        'name': name,
-        'workSessions': workSessions.map((session) => {
-              'startTime': session.startTime.toIso8601String(),
-              'endTime': session.endTime.toIso8601String(),
-            }).toList(),
-      };
+  @override
+  Project fromMap(Map<String, dynamic> map) {
+    return Project(
+      name: map['name'],
+      workSessions: (map['workSessions'] as List<dynamic>)
+          .map<WorkSession>((wsMap) => WorkSession.fromMap(wsMap))
+          .toList(),
+    );
+  }
 }

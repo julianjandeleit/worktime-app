@@ -1,13 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'viewmodels/ProjectViewModel.dart'; // Update the import path based on your project structure
-import 'views/ProjectView.dart'; // Update the import path based on your project structure
+import 'package:work_time_app/recipes/classrecipe.dart';
+import 'package:work_time_app/util/serializable.dart';
+import 'models/Project.dart'; // Adjust the import path as needed
+import 'models/WorkSession.dart'; // Adjust the import path as needed
+import 'viewmodels/ProjectViewModel.dart'; // Adjust the import path as needed
+import 'viewmodels/WorkSessionViewModel.dart'; // Adjust the import path as needed
+import 'views/ProjectView.dart';
+import 'views/WorkSessionView.dart'; // Adjust the import path as needed
 
 class Workspace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final projectViewModel = Provider.of<ProjectViewModel>(context);
-    print(projectViewModel.projects);
+    final workSessionViewModel = Provider.of<WorkSessionViewModel>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Workspace'),
@@ -22,6 +29,16 @@ class Workspace extends StatelessWidget {
       ),
       body: Column(
         children: [
+          Flexible(
+              child: projectViewModel.projects.isNotEmpty
+                  ? (ClassRecipe<Project>(
+                      item: projectViewModel.projects[0]!,
+                      onChanged: (updatedProject) {
+                        projectViewModel.projects[0] = updatedProject;
+                        projectViewModel.notifyListeners();
+                      },
+                    ))
+                  : Container()),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(
@@ -35,14 +52,16 @@ class Workspace extends StatelessWidget {
           Expanded(
             child: ProjectView(projectViewModel: projectViewModel),
           ),
+          if (workSessionViewModel.selectedProject != null)
+            WorkSessionView(workSessionViewModel: workSessionViewModel),
         ],
       ),
-      // floatingActionButton: FloatingActionButton(
-      //   onPressed: () {
-      //     // Add project creation logic here
-      //   },
-      //   child: Icon(Icons.add),
-      // ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          projectViewModel.addProject("new Project");
+        },
+        child: Icon(Icons.add),
+      ),
     );
   }
 }
