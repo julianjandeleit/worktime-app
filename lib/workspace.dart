@@ -31,14 +31,12 @@ class Workspace extends StatelessWidget {
         children: [
           Flexible(
               child: projectViewModel.projects.isNotEmpty
-                  ? (ClassRecipe<Project>(
-                      item: projectViewModel.projects[0]!,
-                      fromJsonT: Project.fromJson,
-                      onChanged: (updatedProject) {
-                        projectViewModel.projects[0] = updatedProject;
+                  ? projectViewModel.projects[0].buildRecipe(
+                      onChanged: (updated) {
+                        projectViewModel.projects[0] = updated as Project;
                         projectViewModel.notifyListeners();
                       },
-                    ))
+                    )
                   : Container()),
           Padding(
             padding: const EdgeInsets.all(16.0),

@@ -11,12 +11,6 @@ class BasicList<T extends Recipeable> implements Recipeable {
 
   BasicList({required this.items});
 
-  @override
-  Widget buildRecipe() {
-    // Implement your widget visualization logic here
-    throw UnimplementedError();
-  }
-
   factory BasicList.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
       _$BasicListFromJson<T>(json, fromJsonT);
@@ -24,4 +18,10 @@ class BasicList<T extends Recipeable> implements Recipeable {
   @override
   Map<String, dynamic> toJson() =>
       _$BasicListToJson<T>(this, (item) => item.toJson());
+
+  @override
+  Widget buildRecipe({void Function(Recipeable p1)? onChanged}) {
+    // TODO: implement buildRecipe
+    return Container();
+  }
 }

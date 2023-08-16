@@ -15,11 +15,6 @@ class WorkSession implements Recipeable {
     required this.endTime,
   });
 
-  @override
-  Widget buildRecipe() {
-    return Container();
-  }
-
   /// Connect the generated [_$PersonFromJson] function to the `fromJson`
   /// factory.
   factory WorkSession.fromJson(Map<String, dynamic> json) =>
@@ -27,4 +22,10 @@ class WorkSession implements Recipeable {
 
   /// Connect the generated [_$PersonToJson] function to the `toJson` method.
   Map<String, dynamic> toJson() => _$WorkSessionToJson(this);
+
+  @override
+  Widget buildRecipe({void Function(Recipeable p1)? onChanged}) {
+    // TODO: implement buildRecipe
+    return Container();
+  }
 }

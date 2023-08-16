@@ -5,7 +5,7 @@ import 'package:json_annotation/json_annotation.dart';
 abstract class Recipeable {
   Map<String, dynamic> toJson();
 
-  Widget buildRecipe();
+  Widget buildRecipe({void Function(Recipeable)? onChanged});
 
   static T fromJson<T>(Map<String, dynamic> json) {
     return _$SerializableFromJson<T>(json);

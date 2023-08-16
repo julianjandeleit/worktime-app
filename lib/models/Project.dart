@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
+import '../recipes/classrecipe.dart';
 import '../util/recipeable.dart';
 import 'WorkSession.dart';
 
@@ -17,8 +18,12 @@ class Project implements Recipeable {
   });
 
   @override
-  Widget buildRecipe() {
-    return Container();
+  Widget buildRecipe({void Function(Recipeable)? onChanged}) {
+    return ClassRecipe<Project>(
+      item: this,
+      fromJsonT: Project.fromJson,
+      onChanged: (p0) => onChanged?.call(p0),
+    );
   }
 
   /// Connect the generated [_$PersonFromJson] function to the `fromJson`
