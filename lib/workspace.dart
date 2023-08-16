@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_time_app/recipes/classrecipe.dart';
-import 'package:work_time_app/util/serializable.dart';
+import 'package:work_time_app/util/recipeable.dart';
 import 'models/Project.dart'; // Adjust the import path as needed
 import 'models/WorkSession.dart'; // Adjust the import path as needed
 import 'viewmodels/ProjectViewModel.dart'; // Adjust the import path as needed
@@ -33,6 +33,7 @@ class Workspace extends StatelessWidget {
               child: projectViewModel.projects.isNotEmpty
                   ? (ClassRecipe<Project>(
                       item: projectViewModel.projects[0]!,
+                      fromJsonT: Project.fromJson,
                       onChanged: (updatedProject) {
                         projectViewModel.projects[0] = updatedProject;
                         projectViewModel.notifyListeners();

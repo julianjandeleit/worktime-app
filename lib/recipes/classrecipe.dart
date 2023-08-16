@@ -1,24 +1,23 @@
 import 'package:flutter/material.dart';
 
-import '../util/serializable.dart';
+import '../util/recipeable.dart';
 
-class ClassRecipe<T extends Serializable> extends StatefulWidget {
+class ClassRecipe<T extends Recipeable> extends StatefulWidget {
   final T item;
   final void Function(T) onChanged;
+  final T Function(Map<String, dynamic>) fromJsonT; // Add this
 
-  ClassRecipe({required this.item, required this.onChanged});
-
-  void _onChangedSerializable(Serializable item) {
-    if (item is T) {
-      onChanged(item);
-    }
-  }
+  ClassRecipe({
+    required this.item,
+    required this.onChanged,
+    required this.fromJsonT, // Add this
+  });
 
   @override
   _ClassRecipeState<T> createState() => _ClassRecipeState<T>();
 }
 
-class _ClassRecipeState<T extends Serializable> extends State<ClassRecipe<T>> {
+class _ClassRecipeState<T extends Recipeable> extends State<ClassRecipe<T>> {
   late Map<String, TextEditingController> controllers;
 
   @override
@@ -47,11 +46,9 @@ class _ClassRecipeState<T extends Serializable> extends State<ClassRecipe<T>> {
           subtitle: TextField(
             controller: controller,
             onChanged: (_) {
-              // final updatedItem = T.fromJson({
-              //   ...widget.item.toJson(),
-              //   attributeName: controller.text,
-              // });
-              // widget._onChangedSerializable(updatedItem);
+              final updatedItem = widget.fromJsonT(
+                  {...widget.item.toJson(), attributeName: controller.text});
+              widget.onChanged(updatedItem);
             },
           ),
         );

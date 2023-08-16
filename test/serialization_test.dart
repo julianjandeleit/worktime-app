@@ -34,9 +34,7 @@ void main() {
     );
 
     // Convert BasicList to JSON
-    final json = projects.toJson(
-      (p0) => p0.toJson(),
-    );
+    final json = projects.toJson();
     print(json);
 
     // Convert JSON back to BasicList

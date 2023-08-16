@@ -1,10 +1,11 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
 @JsonSerializable()
-abstract class Serializable {
-  const Serializable();
-
+abstract class Recipeable {
   Map<String, dynamic> toJson();
+
+  Widget buildRecipe();
 
   static T fromJson<T>(Map<String, dynamic> json) {
     return _$SerializableFromJson<T>(json);

@@ -1,12 +1,13 @@
+import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 
-import '../util/serializable.dart';
+import '../util/recipeable.dart';
 import 'WorkSession.dart';
 
 part 'Project.g.dart'; // This is the generated file from json_serializable
 
 @JsonSerializable(explicitToJson: true)
-class Project implements Serializable {
+class Project implements Recipeable {
   final String name;
   final List<WorkSession> workSessions;
 
@@ -14,6 +15,11 @@ class Project implements Serializable {
     required this.name,
     required this.workSessions,
   });
+
+  @override
+  Widget buildRecipe() {
+    return Container();
+  }
 
   /// Connect the generated [_$PersonFromJson] function to the `fromJson`
   /// factory.

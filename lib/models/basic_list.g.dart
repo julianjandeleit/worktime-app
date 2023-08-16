@@ -6,7 +6,7 @@ part of 'basic_list.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-BasicList<T> _$BasicListFromJson<T extends Serializable>(
+BasicList<T> _$BasicListFromJson<T extends Recipeable>(
   Map<String, dynamic> json,
   T Function(Object? json) fromJsonT,
 ) =>
@@ -14,7 +14,7 @@ BasicList<T> _$BasicListFromJson<T extends Serializable>(
       items: (json['items'] as List<dynamic>).map(fromJsonT).toList(),
     );
 
-Map<String, dynamic> _$BasicListToJson<T extends Serializable>(
+Map<String, dynamic> _$BasicListToJson<T extends Recipeable>(
   BasicList<T> instance,
   Object? Function(T value) toJsonT,
 ) =>
