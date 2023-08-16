@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:work_time_app/firebase_options.dart';
 import 'package:work_time_app/models/WorkSession.dart';
 import 'package:work_time_app/viewmodels/ProjectViewModel.dart';
+import 'models/Project.dart';
+import 'models/basic_list.dart';
 import 'userDataProvider.dart';
 import 'login.dart';
 import 'viewmodels/WorkSessionViewModel.dart';
@@ -12,6 +15,12 @@ import 'workspace.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  SystemChannels.lifecycle.setMessageHandler((message) async {
+    if (message == AppLifecycleState.resumed.toString()) {
+      // Set the log level to warning or error
+      await logWarningOrError();
+    }
+  });
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
 
   final GoogleSignIn googleSignIn = GoogleSignIn(
@@ -49,4 +58,10 @@ class WorkTimeApp extends StatelessWidget {
       },
     );
   }
+}
+
+Future<void> logWarningOrError() async {
+  // Set the log level to warning or error
+  await Future.delayed(Duration.zero);
+  SystemChannels.platform.invokeMethod<void>('SystemNavigator.pop');
 }

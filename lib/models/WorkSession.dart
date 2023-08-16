@@ -1,6 +1,10 @@
 import '../util/serializable.dart';
+import 'package:json_annotation/json_annotation.dart';
 
-class WorkSession {
+part 'WorkSession.g.dart';
+
+@JsonSerializable(explicitToJson: true)
+class WorkSession implements Serializable {
   final DateTime startTime;
   final DateTime endTime;
 
@@ -9,17 +13,11 @@ class WorkSession {
     required this.endTime,
   });
 
-  Map<String, dynamic> toMap() {
-    return {
-      'startTime': startTime.toIso8601String(),
-      'endTime': endTime.toIso8601String(),
-    };
-  }
+  /// Connect the generated [_$PersonFromJson] function to the `fromJson`
+  /// factory.
+  factory WorkSession.fromJson(Map<String, dynamic> json) =>
+      _$WorkSessionFromJson(json);
 
-  factory WorkSession.fromMap(Map<String, dynamic> map) {
-    return WorkSession(
-      startTime: DateTime.parse(map['startTime']),
-      endTime: DateTime.parse(map['endTime']),
-    );
-  }
+  /// Connect the generated [_$PersonToJson] function to the `toJson` method.
+  Map<String, dynamic> toJson() => _$WorkSessionToJson(this);
 }

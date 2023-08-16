@@ -24,7 +24,7 @@ class _ClassRecipeState<T extends Serializable> extends State<ClassRecipe<T>> {
   @override
   void initState() {
     super.initState();
-    controllers = widget.item.toMap().map(
+    controllers = widget.item.toJson().map(
       (key, value) {
         final controller = TextEditingController(text: value.toString());
         controller.addListener(() {
@@ -47,11 +47,11 @@ class _ClassRecipeState<T extends Serializable> extends State<ClassRecipe<T>> {
           subtitle: TextField(
             controller: controller,
             onChanged: (_) {
-              final updatedItem = widget.item.fromMap({
-                ...widget.item.toMap(),
-                attributeName: controller.text,
-              });
-              widget._onChangedSerializable(updatedItem);
+              // final updatedItem = T.fromJson({
+              //   ...widget.item.toJson(),
+              //   attributeName: controller.text,
+              // });
+              // widget._onChangedSerializable(updatedItem);
             },
           ),
         );
