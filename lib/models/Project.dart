@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:work_time_app/models/basic_list.dart';
+import 'package:work_time_app/models/basic_neutral.dart';
+import 'package:work_time_app/models/basic_string.dart';
+import 'package:work_time_app/recipes/listrecipe.dart';
 
 import '../recipes/classrecipe.dart';
 import '../util/recipeable.dart';
@@ -9,8 +13,8 @@ part 'Project.g.dart'; // This is the generated file from json_serializable
 
 @JsonSerializable(explicitToJson: true)
 class Project implements Recipeable {
-  final String name;
-  final List<WorkSession> workSessions;
+  final BasicString name;
+  final BasicList<WorkSession> workSessions;
 
   Project({
     required this.name,
@@ -21,7 +25,20 @@ class Project implements Recipeable {
   Widget buildRecipe({void Function(Recipeable)? onChanged}) {
     return ClassRecipe<Project>(
       item: this,
-      fromJsonT: Project.fromJson,
+      fromJson: (p0, {attrname}) {
+        print("received fromJson $attrname ${p0}");
+        switch (attrname) {
+          case null:
+            return Project.fromJson(p0);
+          case "name":
+            return BasicString.fromJson(p0);
+          case "workSessions":
+            return WorkSession(
+                startTime: DateTime.now(), endTime: DateTime.now());
+        }
+
+        throw ArgumentError();
+      },
       onChanged: (p0) => onChanged?.call(p0),
     );
   }

@@ -13,8 +13,8 @@ class WorkSessionViewModel extends ChangeNotifier {
 
   void selectProject(Project project) {
     _selectedProject = project;
-    _workSessions =
-        project.workSessions; // Load work sessions for the selected project
+    _workSessions = project
+        .workSessions.items; // Load work sessions for the selected project
     notifyListeners();
   }
 }

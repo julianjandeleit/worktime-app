@@ -21,7 +21,7 @@ class ProjectView extends StatelessWidget {
 
         return ListTile(
           title: Container(
-            child: Text(project.name),
+            child: Text(project.name.item),
             color: Colors.amber,
           ),
           onTap: () {

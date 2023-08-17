@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 
-class ListDisplayWidget<T> extends StatelessWidget {
+class ListRecipe<T> extends StatelessWidget {
   final List<T> itemList;
   final Widget Function(BuildContext context, T item) itemBuilder;
 
-  ListDisplayWidget({
+  ListRecipe({
     required this.itemList,
     required this.itemBuilder,
   });

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:work_time_app/models/basic_list.dart';
+import 'package:work_time_app/models/basic_string.dart';
 
 import '../models/Project.dart';
 
@@ -10,7 +12,9 @@ class ProjectViewModel extends ChangeNotifier {
   Project? get selectedProject => _selectedProject;
 
   void addProject(String projectName) {
-    final newProject = Project(name: projectName, workSessions: []);
+    final newProject = Project(
+        name: BasicString(item: projectName),
+        workSessions: BasicList(items: []));
     projects.add(newProject);
     notifyListeners(); // Notify listeners of the data change
   }

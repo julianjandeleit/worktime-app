@@ -26,6 +26,7 @@ class WorkSession implements Recipeable {
   @override
   Widget buildRecipe({void Function(Recipeable p1)? onChanged}) {
     // TODO: implement buildRecipe
-    return Container();
+    return Text(
+        "${startTime.toIso8601String()} - ${endTime.toIso8601String()}");
   }
 }

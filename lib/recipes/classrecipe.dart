@@ -1,56 +1,41 @@
 import 'package:flutter/material.dart';
+import 'package:work_time_app/models/Project.dart';
 
 import '../util/recipeable.dart';
 
-class ClassRecipe<T extends Recipeable> extends StatefulWidget {
+class ClassRecipe<T extends Recipeable> extends StatelessWidget {
   final T item;
   final void Function(T) onChanged;
-  final T Function(Map<String, dynamic>) fromJsonT; // Add this
+  // Important: this should call fromJson constructors, not pass on existing instances
+  final Recipeable Function(Map<String, dynamic>, {String? attrname}) fromJson;
 
   ClassRecipe({
     required this.item,
     required this.onChanged,
-    required this.fromJsonT, // Add this
+    required this.fromJson,
   });
 
   @override
-  _ClassRecipeState<T> createState() => _ClassRecipeState<T>();
-}
-
-class _ClassRecipeState<T extends Recipeable> extends State<ClassRecipe<T>> {
-  late Map<String, TextEditingController> controllers;
-
-  @override
-  void initState() {
-    super.initState();
-    controllers = widget.item.toJson().map(
-      (key, value) {
-        final controller = TextEditingController(text: value.toString());
-        controller.addListener(() {
-          setState(() {});
-        });
-        return MapEntry(key, controller);
-      },
-    );
-  }
-
-  @override
   Widget build(BuildContext context) {
+    //widget.item.toJson().entries.map((e) => widget.fromJsonT({e.key: e.value}))
+    print(item.toJson().entries.map((e) => e.key));
+    final children = item.toJson().entries;
     return ListView.builder(
-      itemCount: controllers.length,
+      itemCount: children.length,
       itemBuilder: (context, index) {
-        final attributeName = controllers.keys.elementAt(index);
-        final controller = controllers[attributeName]!;
-        return ListTile(
-          title: Text(attributeName),
-          subtitle: TextField(
-            controller: controller,
-            onChanged: (_) {
-              final updatedItem = widget.fromJsonT(
-                  {...widget.item.toJson(), attributeName: controller.text});
-              widget.onChanged(updatedItem);
-            },
-          ),
+        final attributeName = children.elementAt(index).key;
+        final attributeJson = children.elementAt(index).value;
+
+        //print("full model ${item.toJson()}");
+        print("attr model json ${attributeName} ${attributeJson}");
+        final model = fromJson(attributeJson, attrname: attributeName);
+        //return Container();
+        return model.buildRecipe(
+          onChanged: (p0) {
+            final updated =
+                fromJson({...item.toJson(), attributeName: p0.toJson()});
+            onChanged(updated as T);
+          },
         );
       },
     );
