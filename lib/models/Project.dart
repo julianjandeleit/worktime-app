@@ -24,6 +24,7 @@ class Project implements Recipeable {
   @override
   Widget buildRecipe({void Function(Recipeable)? onChanged}) {
     return ClassRecipe<Project>(
+      name: "Project",
       item: this,
       fromJson: (p0, {attrname}) {
         print("received fromJson $attrname ${p0}");
@@ -33,8 +34,8 @@ class Project implements Recipeable {
           case "name":
             return BasicString.fromJson(p0);
           case "workSessions":
-            return WorkSession(
-                startTime: DateTime.now(), endTime: DateTime.now());
+            return BasicList<WorkSession>.fromJson(
+                p0, (p0) => WorkSession.fromJson(p0 as Map<String, dynamic>));
         }
 
         throw ArgumentError();

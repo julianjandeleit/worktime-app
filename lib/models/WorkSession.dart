@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:work_time_app/recipes/classrecipe.dart';
 
 import '../util/recipeable.dart';
 import 'package:json_annotation/json_annotation.dart';
+
+import 'RDatetime.dart';
 
 part 'WorkSession.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class WorkSession implements Recipeable {
-  final DateTime startTime;
-  final DateTime endTime;
+  final RDatetime startTime;
+  final RDatetime endTime;
 
   WorkSession({
     required this.startTime,
@@ -25,8 +28,24 @@ class WorkSession implements Recipeable {
 
   @override
   Widget buildRecipe({void Function(Recipeable p1)? onChanged}) {
-    // TODO: implement buildRecipe
-    return Text(
-        "${startTime.toIso8601String()} - ${endTime.toIso8601String()}");
+//    return Text("work session");
+
+    return ClassRecipe<WorkSession>(
+      name: "WorkSession",
+      item: this,
+      fromJson: (p0, {attrname}) {
+        switch (attrname) {
+          case null:
+            return WorkSession.fromJson(p0);
+          case "startTime":
+            return RDatetime.fromJson(p0);
+          case "endTime":
+            return RDatetime.fromJson(p0);
+        }
+
+        throw ArgumentError();
+      },
+      onChanged: (p0) => onChanged?.call(p0),
+    );
   }
 }

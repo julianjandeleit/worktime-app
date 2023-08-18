@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:work_time_app/models/RDatetime.dart';
+import 'package:work_time_app/models/WorkSession.dart';
 import 'package:work_time_app/models/basic_list.dart';
 import 'package:work_time_app/models/basic_string.dart';
 
@@ -14,7 +16,11 @@ class ProjectViewModel extends ChangeNotifier {
   void addProject(String projectName) {
     final newProject = Project(
         name: BasicString(item: projectName),
-        workSessions: BasicList(items: []));
+        workSessions: BasicList(items: [
+          WorkSession(
+              startTime: RDatetime(item: DateTime.now()),
+              endTime: RDatetime(item: DateTime.now().add(Duration(hours: 1))))
+        ]));
     projects.add(newProject);
     notifyListeners(); // Notify listeners of the data change
   }

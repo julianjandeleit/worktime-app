@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:work_time_app/util/recipeable.dart';
 
-class ListRecipe<T> extends StatelessWidget {
+class ListRecipe<T extends Recipeable> extends StatelessWidget {
   final List<T> itemList;
   final Widget Function(BuildContext context, T item) itemBuilder;
 
@@ -11,12 +12,14 @@ class ListRecipe<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-      itemCount: itemList.length,
-      itemBuilder: (context, index) {
-        final item = itemList[index];
-        return itemBuilder(context, item);
-      },
+    return Container(
+      decoration: const BoxDecoration(border: Border(left: BorderSide())),
+      padding: const EdgeInsets.all(15),
+      child: ListView.builder(
+        shrinkWrap: true,
+        itemCount: itemList.length,
+        itemBuilder: (context, index) => itemList[index].buildRecipe(),
+      ),
     );
   }
 }

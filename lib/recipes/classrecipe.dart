@@ -4,12 +4,14 @@ import 'package:work_time_app/models/Project.dart';
 import '../util/recipeable.dart';
 
 class ClassRecipe<T extends Recipeable> extends StatelessWidget {
+  final String name;
   final T item;
   final void Function(T) onChanged;
   // Important: this should call fromJson constructors, not pass on existing instances
   final Recipeable Function(Map<String, dynamic>, {String? attrname}) fromJson;
 
   ClassRecipe({
+    required this.name,
     required this.item,
     required this.onChanged,
     required this.fromJson,
@@ -21,22 +23,43 @@ class ClassRecipe<T extends Recipeable> extends StatelessWidget {
     print(item.toJson().entries.map((e) => e.key));
     final children = item.toJson().entries;
     return ListView.builder(
-      itemCount: children.length,
+      shrinkWrap: true,
+      itemCount: children.length + 1,
       itemBuilder: (context, index) {
-        final attributeName = children.elementAt(index).key;
-        final attributeJson = children.elementAt(index).value;
+        if (index == 0) {
+          return Container(
+            margin: const EdgeInsets.all(
+                12), //TODO: make number/size dependant on available space
+            child: Text(
+              this.name,
+              style: const TextStyle(fontWeight: FontWeight.bold),
+            ),
+          );
+        }
+        final list_index = index - 1;
+        final attributeName = children.elementAt(list_index).key;
+        final attributeJson = children.elementAt(list_index).value;
 
         //print("full model ${item.toJson()}");
         print("attr model json ${attributeName} ${attributeJson}");
         final model = fromJson(attributeJson, attrname: attributeName);
         //return Container();
-        return model.buildRecipe(
-          onChanged: (p0) {
-            print("inrecipe changed to $p0");
-            final updated =
-                fromJson({...item.toJson(), attributeName: p0.toJson()});
-            onChanged(updated as T);
-          },
+        return Wrap(
+          alignment: WrapAlignment.start,
+          crossAxisAlignment: WrapCrossAlignment.start,
+          children: [
+            Container(
+                margin: const EdgeInsets.only(top: 5),
+                child: Text(attributeName)),
+            model.buildRecipe(
+              onChanged: (p0) {
+                print("inrecipe changed to $p0");
+                final updated =
+                    fromJson({...item.toJson(), attributeName: p0.toJson()});
+                onChanged(updated as T);
+              },
+            ),
+          ],
         );
       },
     );

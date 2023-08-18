@@ -6,17 +6,13 @@ part of 'WorkSession.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-WorkSession _$WorkSessionFromJson(Map<String, dynamic> json) {
-  //print("JSON\n${json}\n");
-
-  return WorkSession(
-    startTime: DateTime.parse(json['startTime'] as String),
-    endTime: DateTime.parse(json['endTime'] as String),
-  );
-}
+WorkSession _$WorkSessionFromJson(Map<String, dynamic> json) => WorkSession(
+      startTime: RDatetime.fromJson(json['startTime'] as Map<String, dynamic>),
+      endTime: RDatetime.fromJson(json['endTime'] as Map<String, dynamic>),
+    );
 
 Map<String, dynamic> _$WorkSessionToJson(WorkSession instance) =>
     <String, dynamic>{
-      'startTime': instance.startTime.toIso8601String(),
-      'endTime': instance.endTime.toIso8601String(),
+      'startTime': instance.startTime.toJson(),
+      'endTime': instance.endTime.toJson(),
     };

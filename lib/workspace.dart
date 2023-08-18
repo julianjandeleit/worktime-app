@@ -30,6 +30,7 @@ class Workspace extends StatelessWidget {
       body: Column(
         children: [
           Flexible(
+              flex: 10,
               child: projectViewModel.projects.isNotEmpty
                   ? projectViewModel.projects[0].buildRecipe(
                       onChanged: (updated) {

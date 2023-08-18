@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:work_time_app/models/Project.dart';
+import 'package:work_time_app/models/RDatetime.dart';
 import 'package:work_time_app/models/WorkSession.dart';
 import 'package:work_time_app/models/basic_list.dart';
 import 'package:work_time_app/models/basic_string.dart'; // Replace with your actual import
@@ -57,8 +58,8 @@ void main() {
     //     projects.items[0].workSessions.items[0].startTime);
 
     final session = WorkSession(
-        startTime: DateTime.now(),
-        endTime: DateTime.now().add(Duration(hours: 1)));
+        startTime: RDatetime(item: DateTime.now()),
+        endTime: RDatetime(item: DateTime.now().add(Duration(hours: 1))));
 
     final sJson = session.toJson();
     // print("workSession json ${sJson}");
@@ -67,12 +68,12 @@ void main() {
 
     final workSessions = BasicList<WorkSession>(items: [
       WorkSession(
-        startTime: DateTime.now(),
-        endTime: DateTime.now().add(Duration(hours: 1)),
+        startTime: RDatetime(item: DateTime.now()),
+        endTime: RDatetime(item: DateTime.now().add(Duration(hours: 1))),
       ),
       WorkSession(
-        startTime: DateTime.now(),
-        endTime: DateTime.now().add(Duration(hours: 2)),
+        startTime: RDatetime(item: DateTime.now()),
+        endTime: RDatetime(item: DateTime.now().add(Duration(hours: 1))),
       ),
     ]);
 

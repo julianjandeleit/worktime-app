@@ -22,7 +22,6 @@ class _TextRecipeState extends State<TextRecipe> {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      title: Text("Text"),
       subtitle: TextField(
         controller: _controller,
         onChanged: (newValue) {
