@@ -20,7 +20,7 @@ class ClassRecipe<T extends Recipeable> extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //widget.item.toJson().entries.map((e) => widget.fromJsonT({e.key: e.value}))
-    print(item.toJson().entries.map((e) => e.key));
+    //print(item.toJson().entries.map((e) => e.key));
     final children = item.toJson().entries;
     return ListView.builder(
       shrinkWrap: true,
@@ -41,7 +41,7 @@ class ClassRecipe<T extends Recipeable> extends StatelessWidget {
         final attributeJson = children.elementAt(list_index).value;
 
         //print("full model ${item.toJson()}");
-        print("attr model json ${attributeName} ${attributeJson}");
+        // print("attr model json ${attributeName} ${attributeJson}");
         final model = fromJson(attributeJson, attrname: attributeName);
         //return Container();
         return Wrap(
@@ -55,8 +55,8 @@ class ClassRecipe<T extends Recipeable> extends StatelessWidget {
               onChanged: (p0) {
                 final updated =
                     fromJson({...item.toJson(), attributeName: p0.toJson()});
-                print("inrecipe changed to $p0");
-                print("calling class onchanged on $updated");
+                //    print("inrecipe changed to $p0");
+                //    print("calling class onchanged on $updated");
                 onChanged(updated as T);
               },
             ),

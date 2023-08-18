@@ -34,7 +34,7 @@ class Workspace extends StatelessWidget {
               flex: 10,
               child: BasicList<Project>(items: projectViewModel.projects)
                   .buildRecipe(onChanged: (updated) {
-                print("top level update ${updated}");
+                //print("top level update ${updated}");
                 projectViewModel.projects =
                     (updated as BasicList<Project>).items;
                 projectViewModel.notifyListeners();

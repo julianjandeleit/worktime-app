@@ -40,7 +40,7 @@ class Project implements Recipeable {
         throw ArgumentError();
       },
       onChanged: (p0) {
-        print("onchanged called in project");
+        //   print("onchanged called in project");
         onChanged?.call(p0);
       },
     );
