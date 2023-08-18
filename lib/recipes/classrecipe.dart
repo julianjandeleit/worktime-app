@@ -53,9 +53,10 @@ class ClassRecipe<T extends Recipeable> extends StatelessWidget {
                 child: Text(attributeName)),
             model.buildRecipe(
               onChanged: (p0) {
-                print("inrecipe changed to $p0");
                 final updated =
                     fromJson({...item.toJson(), attributeName: p0.toJson()});
+                print("inrecipe changed to $p0");
+                print("calling class onchanged on $updated");
                 onChanged(updated as T);
               },
             ),

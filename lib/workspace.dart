@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:work_time_app/models/basic_list.dart';
 import 'package:work_time_app/recipes/classrecipe.dart';
 import 'package:work_time_app/util/recipeable.dart';
 import 'models/Project.dart'; // Adjust the import path as needed
@@ -31,14 +32,13 @@ class Workspace extends StatelessWidget {
         children: [
           Flexible(
               flex: 10,
-              child: projectViewModel.projects.isNotEmpty
-                  ? projectViewModel.projects[0].buildRecipe(
-                      onChanged: (updated) {
-                        projectViewModel.projects[0] = updated as Project;
-                        projectViewModel.notifyListeners();
-                      },
-                    )
-                  : Container()),
+              child: BasicList<Project>(items: projectViewModel.projects)
+                  .buildRecipe(onChanged: (updated) {
+                print("top level update ${updated}");
+                projectViewModel.projects =
+                    (updated as BasicList<Project>).items;
+                projectViewModel.notifyListeners();
+              })),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Text(

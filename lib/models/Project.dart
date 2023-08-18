@@ -27,7 +27,6 @@ class Project implements Recipeable {
       name: "Project",
       item: this,
       fromJson: (p0, {attrname}) {
-        print("received fromJson $attrname ${p0}");
         switch (attrname) {
           case null:
             return Project.fromJson(p0);
@@ -40,7 +39,10 @@ class Project implements Recipeable {
 
         throw ArgumentError();
       },
-      onChanged: (p0) => onChanged?.call(p0),
+      onChanged: (p0) {
+        print("onchanged called in project");
+        onChanged?.call(p0);
+      },
     );
   }
 

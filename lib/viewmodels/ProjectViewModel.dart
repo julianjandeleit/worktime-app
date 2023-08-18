@@ -12,6 +12,7 @@ class ProjectViewModel extends ChangeNotifier {
 
   List<Project> get projects => _projects;
   Project? get selectedProject => _selectedProject;
+  set projects(List<Project> projects) => _projects = projects;
 
   void addProject(String projectName) {
     final newProject = Project(

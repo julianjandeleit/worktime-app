@@ -22,12 +22,10 @@ class BasicList<T extends Recipeable> implements Recipeable {
 
   @override
   Widget buildRecipe({void Function(Recipeable p1)? onChanged}) {
-    print("list items $items");
+    print("list items ${items.map((e) => e.toJson())}");
     return ListRecipe<T>(
       itemList: items,
-      itemBuilder: (context, item) => item.buildRecipe(
-        onChanged: (p0) => onChanged?.call(p0),
-      ),
+      onChanged: (items) => onChanged?.call(BasicList(items: items)),
     );
   }
 }
