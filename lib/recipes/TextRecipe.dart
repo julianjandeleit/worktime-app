@@ -26,6 +26,7 @@ class _TextRecipeState extends State<TextRecipe> {
       subtitle: TextField(
         controller: _controller,
         onChanged: (newValue) {
+          //print("textrecipe $newValue");
           widget.onChanged(newValue);
         },
       ),

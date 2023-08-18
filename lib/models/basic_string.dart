@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:json_annotation/json_annotation.dart';
+import 'package:work_time_app/recipes/TextRecipe.dart';
 import '../util/recipeable.dart';
 
 part 'basic_string.g.dart';
@@ -20,6 +21,9 @@ class BasicString implements Recipeable {
   @override
   Widget buildRecipe({void Function(Recipeable p1)? onChanged}) {
     // TODO: implement buildRecipe
-    return Text(this.item);
+    return TextRecipe(
+      initialText: item,
+      onChanged: (p0) => onChanged?.call(BasicString(item: p0)),
+    );
   }
 }
