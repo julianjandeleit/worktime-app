@@ -29,6 +29,9 @@ class BasicList<T extends Recipeable> implements Recipeable {
   Map<String, dynamic> toJson() =>
       _$BasicListToJson<T>(this, (item) => item.toJson());
 
+//TODO: how to conceptualize differend kinds of views for the same data? new class? give option on onRecipe?
+// should other visualizations have other abilities?
+// some sort of visualizer class given as generic?
   @override
   Widget buildRecipe({void Function(Recipeable p1)? onChanged}) {
     return ListRecipe<T>(

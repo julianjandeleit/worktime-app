@@ -38,6 +38,7 @@ class ListRecipe<T extends Recipeable> extends StatelessWidget {
                 borderRadius: BorderRadius.circular(8),
               ),
               child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconButton(
                     icon: Icon(Icons.delete),
