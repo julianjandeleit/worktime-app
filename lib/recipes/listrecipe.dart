@@ -13,24 +13,44 @@ class ListRecipe<T extends Recipeable> extends StatelessWidget {
       decoration: const BoxDecoration(border: Border(left: BorderSide())),
       padding: const EdgeInsets.all(15),
       child: ListView.separated(
-          shrinkWrap: true,
-          itemCount: itemList.length,
-          itemBuilder: (context, index) => itemList[index].buildRecipe(
-                onChanged: (p0) {
+        shrinkWrap: true,
+        itemCount: itemList.length,
+        itemBuilder: (context, index) => Container(
+          decoration: BoxDecoration(
+            color: Colors.grey.withOpacity(0.1), // Subtle background color
+            borderRadius: BorderRadius.circular(8),
+          ),
+          child: Row(
+            children: [
+              IconButton(
+                icon: Icon(Icons.delete),
+                onPressed: () {
                   final copiedList = [...itemList];
-                  copiedList[index] = p0 as T;
-
+                  copiedList.removeAt(index);
                   onChanged(copiedList);
                 },
               ),
-          separatorBuilder: (BuildContext context, int index) => Container(
-                margin: const EdgeInsets.all(15),
-                child: Divider(
-                  color: Colors.black.withOpacity(0.75),
-                  endIndent: 15,
-                  thickness: 3,
+              Expanded(
+                child: itemList[index].buildRecipe(
+                  onChanged: (p0) {
+                    final copiedList = [...itemList];
+                    copiedList[index] = p0 as T;
+                    onChanged(copiedList);
+                  },
                 ),
-              )),
+              ),
+            ],
+          ),
+        ),
+        separatorBuilder: (BuildContext context, int index) => Container(
+          margin: const EdgeInsets.all(15),
+          child: Divider(
+            color: Colors.black.withOpacity(0.75),
+            endIndent: 15,
+            thickness: 3,
+          ),
+        ),
+      ),
     );
   }
 }
