@@ -5,13 +5,16 @@ import 'package:work_time_app/models/basic_list.dart';
 import 'package:work_time_app/models/basic_string.dart';
 
 import '../models/Project.dart';
+import '../models/start_stop.dart';
 
 class ProjectViewModel extends ChangeNotifier {
   List<Project> _projects = []; // List of projects
-  Project? _selectedProject; // Selected project
+  int? selectedProjectIndex; // Selected project
+
+  StartStop<WorkSession> startStopWorkSession = StartStop(
+      is_started: false, child: WorkSession(startTime: null, endTime: null));
 
   List<Project> get projects => _projects;
-  Project? get selectedProject => _selectedProject;
   set projects(List<Project> projects) => _projects = projects;
 
   void addProject(String projectName) {
@@ -30,10 +33,5 @@ class ProjectViewModel extends ChangeNotifier {
   void deleteProject(Project project) {
     projects.remove(project);
     notifyListeners(); // Notify listeners of the data change
-  }
-
-  void selectProject(Project project) {
-    _selectedProject = project;
-    notifyListeners();
   }
 }

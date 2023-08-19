@@ -11,23 +11,19 @@ class ProjectView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final projects = projectViewModel.projects;
-    final selectedProject = projectViewModel.selectedProject;
 
     return ListView.builder(
       itemCount: projects.length,
       itemBuilder: (context, index) {
         final project = projects[index];
-        final isSelected = project == selectedProject;
 
         return ListTile(
           title: Container(
             child: Text(project.name.item),
             color: Colors.amber,
           ),
-          onTap: () {
-            projectViewModel.selectProject(project);
-          },
-          tileColor: isSelected ? Colors.blue.withOpacity(0.3) : null,
+          onTap: () {},
+          tileColor: false ? Colors.blue.withOpacity(0.3) : null,
         );
       },
     );

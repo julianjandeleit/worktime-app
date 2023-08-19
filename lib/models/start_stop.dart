@@ -28,14 +28,14 @@ class StartStop<T extends Recipeable> implements Recipeable {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
           CustomCircularButton(
-            buttonText: "t1",
+            buttonText: "start recording",
             onPressed: () {
               onChanged?.call(StartStop(is_started: true, child: child));
             },
             isClickable: this.is_started == false,
           ),
           CustomCircularButton(
-            buttonText: "t2",
+            buttonText: "stop recording",
             onPressed: () {
               onChanged?.call(StartStop(is_started: false, child: child));
             },

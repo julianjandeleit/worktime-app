@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:work_time_app/models/RDatetime.dart';
 import 'package:work_time_app/models/basic_list.dart';
 import 'package:work_time_app/models/start_stop.dart';
 import 'package:work_time_app/recipes/classrecipe.dart';
@@ -33,12 +34,52 @@ class Workspace extends StatelessWidget {
         children: [
           Flexible(
               flex: 2,
-              child: StartStop<WorkSession>(
-                      is_started: true,
-                      child: WorkSession(startTime: null, endTime: null))
-                  .buildRecipe(
+              child: projectViewModel.startStopWorkSession.buildRecipe(
                 onChanged: (p1) {
-                  print(p1.toJson());
+                  //TODO: hotfix, to be removed if can be handled properly
+                  if (projectViewModel.projects.isNotEmpty) {
+                    projectViewModel.selectedProjectIndex = 0;
+                  }
+                  if (projectViewModel.selectedProjectIndex == null) {
+                    return;
+                  }
+
+                  var update = p1 as StartStop<WorkSession>;
+
+                  if (update.is_started == true &&
+                      projectViewModel.startStopWorkSession.is_started ==
+                          false) {
+                    // just started recording
+                    update.child = WorkSession(
+                        startTime: RDatetime(item: DateTime.now()),
+                        endTime: null);
+                  }
+                  if (update.is_started == false &&
+                      projectViewModel.startStopWorkSession.is_started ==
+                          true) {
+                    // just stopped recording
+                    update.child = WorkSession(
+                        startTime: update.child.startTime,
+                        endTime: RDatetime(item: DateTime.now()));
+
+                    print("pvmsp ${projectViewModel.selectedProjectIndex}");
+
+                    projectViewModel.projects
+                        .elementAt(projectViewModel.selectedProjectIndex!)
+                        .workSessions
+                        .items
+                        .add(update.child);
+
+                    update = StartStop<WorkSession>(
+                        is_started: false,
+                        child: WorkSession(startTime: null, endTime: null));
+                  }
+
+                  // other cases are change in worksession
+
+                  projectViewModel.startStopWorkSession = update;
+
+                  projectViewModel.notifyListeners();
                 },
               )),
           Flexible(
