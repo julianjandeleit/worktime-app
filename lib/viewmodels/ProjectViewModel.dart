@@ -20,12 +20,7 @@ class ProjectViewModel extends ChangeNotifier {
   void addProject(String projectName) {
     final newProject = Project(
         name: BasicString(item: projectName),
-        workSessions: BasicList(items: [
-          WorkSession(
-              startTime: null,
-              // startTime: RDatetime(item: DateTime.now()),
-              endTime: RDatetime(item: DateTime.now().add(Duration(hours: 1))))
-        ]));
+        workSessions: BasicList(items: []));
     projects.add(newProject);
     notifyListeners(); // Notify listeners of the data change
   }

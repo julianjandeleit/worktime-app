@@ -52,10 +52,6 @@ class Workspace extends StatelessWidget {
               padding: const EdgeInsets.all(25.0),
               child: projectViewModel.startStopWorkSession.buildRecipe(
                 onChanged: (p1) {
-                  //TODO: hotfix, to be removed if can be handled properly
-                  if (projectViewModel.projects.isNotEmpty) {
-                    projectViewModel.selectedProjectIndex = 0;
-                  }
                   if (projectViewModel.selectedProjectIndex == null) {
                     return;
                   }
@@ -101,6 +97,9 @@ class Workspace extends StatelessWidget {
             flex: 10,
             child: BasicList<Project>(
                     items: projectViewModel.projects,
+                    onAdd: () {
+                      projectViewModel.addProject("new Project");
+                    },
                     selectable: true,
                     selectedIndex: projectViewModel.selectedProjectIndex)
                 .buildRecipe(onChanged: (updated) {
@@ -111,12 +110,6 @@ class Workspace extends StatelessWidget {
               projectViewModel.notifyListeners();
             })),
       ]),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          projectViewModel.addProject("new Project");
-        },
-        child: Icon(Icons.add),
-      ),
     );
   }
 }

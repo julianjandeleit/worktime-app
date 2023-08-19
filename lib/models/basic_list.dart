@@ -11,11 +11,15 @@ class BasicList<T extends Recipeable> implements Recipeable {
   final List<T> items;
   final bool selectable;
   final int? selectedIndex;
+  final void Function()? onAdd;
+  //TODO: can these "interactive abilities" somehow be aggregated and generalized in a formal way for all recipeables? The above (at least some form of derived state) and especially this callback!
+  // also when duplicating new instances these variables need to be taken care of each individually...
 
   BasicList(
       {required this.items,
       this.selectable = false,
-      this.selectedIndex = null});
+      this.selectedIndex = null,
+      this.onAdd = null});
 
   factory BasicList.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
@@ -30,14 +34,21 @@ class BasicList<T extends Recipeable> implements Recipeable {
     return ListRecipe<T>(
       itemList: items,
       onChanged: (items) => onChanged?.call(BasicList(
-          items: items, selectable: selectable, selectedIndex: selectedIndex)),
+          items: items,
+          selectable: selectable,
+          selectedIndex: selectedIndex,
+          onAdd: onAdd)),
       selectedIndex: selectedIndex,
       onItemSelect: selectable
           ? (index) {
               onChanged?.call(BasicList(
-                  items: items, selectable: selectable, selectedIndex: index));
+                  items: items,
+                  selectable: selectable,
+                  selectedIndex: index,
+                  onAdd: onAdd));
             }
           : null,
+      onAdd: onAdd,
     );
   }
 }
