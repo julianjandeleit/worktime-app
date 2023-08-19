@@ -30,10 +30,26 @@ class Workspace extends StatelessWidget {
           ),
         ],
       ),
-      body: Column(
-        children: [
-          Flexible(
-              flex: 2,
+      body: Column(children: [
+        Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Text(
+            'Your Projects',
+            style: TextStyle(
+              fontSize: 24,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+        ),
+        Flexible(
+            child: Text(projectViewModel.selectedProjectIndex != null
+                ? projectViewModel
+                    .projects[projectViewModel.selectedProjectIndex!].name.item
+                : "not selected")),
+        Flexible(
+            flex: 3,
+            child: Padding(
+              padding: const EdgeInsets.all(25.0),
               child: projectViewModel.startStopWorkSession.buildRecipe(
                 onChanged: (p1) {
                   //TODO: hotfix, to be removed if can be handled properly
@@ -62,8 +78,6 @@ class Workspace extends StatelessWidget {
                         startTime: update.child.startTime,
                         endTime: RDatetime(item: DateTime.now()));
 
-                    print("pvmsp ${projectViewModel.selectedProjectIndex}");
-
                     projectViewModel.projects
                         .elementAt(projectViewModel.selectedProjectIndex!)
                         .workSessions
@@ -81,33 +95,22 @@ class Workspace extends StatelessWidget {
 
                   projectViewModel.notifyListeners();
                 },
-              )),
-          Flexible(
-              flex: 10,
-              child: BasicList<Project>(items: projectViewModel.projects)
-                  .buildRecipe(onChanged: (updated) {
-                //print("top level update ${updated}");
-                projectViewModel.projects =
-                    (updated as BasicList<Project>).items;
-                projectViewModel.notifyListeners();
-              })),
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Text(
-              'Your Projects',
-              style: TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
               ),
-            ),
-          ),
-          Expanded(
-            child: ProjectView(projectViewModel: projectViewModel),
-          ),
-          if (workSessionViewModel.selectedProject != null)
-            WorkSessionView(workSessionViewModel: workSessionViewModel),
-        ],
-      ),
+            )),
+        Flexible(
+            flex: 10,
+            child: BasicList<Project>(
+                    items: projectViewModel.projects,
+                    selectable: true,
+                    selectedIndex: projectViewModel.selectedProjectIndex)
+                .buildRecipe(onChanged: (updated) {
+              //print("top level update ${updated}");
+              projectViewModel.projects = (updated as BasicList<Project>).items;
+              projectViewModel.selectedProjectIndex =
+                  (updated as BasicList<Project>).selectedIndex;
+              projectViewModel.notifyListeners();
+            })),
+      ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           projectViewModel.addProject("new Project");

@@ -4,8 +4,15 @@ import 'package:work_time_app/util/recipeable.dart';
 class ListRecipe<T extends Recipeable> extends StatelessWidget {
   final List<T> itemList;
   final void Function(List<T> items) onChanged;
+  final int? selectedIndex; // Add this property to hold the selected index
+  final void Function(int index)? onItemSelect; // Add this property
 
-  ListRecipe({required this.itemList, required this.onChanged});
+  ListRecipe({
+    required this.itemList,
+    required this.onChanged,
+    this.selectedIndex,
+    this.onItemSelect,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -17,7 +24,9 @@ class ListRecipe<T extends Recipeable> extends StatelessWidget {
         itemCount: itemList.length,
         itemBuilder: (context, index) => Container(
           decoration: BoxDecoration(
-            color: Colors.grey.withOpacity(0.1), // Subtle background color
+            color: selectedIndex == index
+                ? Colors.blue.withOpacity(0.1) // Highlight selected item
+                : Colors.grey.withOpacity(0.1), // Subtle background color
             borderRadius: BorderRadius.circular(8),
           ),
           child: Row(
@@ -30,6 +39,16 @@ class ListRecipe<T extends Recipeable> extends StatelessWidget {
                   onChanged(copiedList);
                 },
               ),
+              if (onItemSelect != null)
+                IconButton(
+                  icon: Icon(selectedIndex == index
+                      ? Icons.circle
+                      : Icons.circle_outlined),
+                  onPressed: () {
+                    onItemSelect?.call(
+                        index); // Call the callback when the icon is pressed
+                  },
+                ),
               Expanded(
                 child: itemList[index].buildRecipe(
                   onChanged: (p0) {
