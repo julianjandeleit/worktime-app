@@ -10,8 +10,8 @@ part 'WorkSession.g.dart';
 
 @JsonSerializable(explicitToJson: true)
 class WorkSession implements Recipeable {
-  final RDatetime startTime;
-  final RDatetime endTime;
+  final RDatetime? startTime;
+  final RDatetime? endTime;
 
   WorkSession({
     required this.startTime,

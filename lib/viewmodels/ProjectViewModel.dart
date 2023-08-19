@@ -19,7 +19,8 @@ class ProjectViewModel extends ChangeNotifier {
         name: BasicString(item: projectName),
         workSessions: BasicList(items: [
           WorkSession(
-              startTime: RDatetime(item: DateTime.now()),
+              startTime: null,
+              // startTime: RDatetime(item: DateTime.now()),
               endTime: RDatetime(item: DateTime.now().add(Duration(hours: 1))))
         ]));
     projects.add(newProject);

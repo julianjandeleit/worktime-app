@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:work_time_app/models/basic_list.dart';
+import 'package:work_time_app/models/start_stop.dart';
 import 'package:work_time_app/recipes/classrecipe.dart';
 import 'package:work_time_app/util/recipeable.dart';
 import 'models/Project.dart'; // Adjust the import path as needed
@@ -30,6 +31,16 @@ class Workspace extends StatelessWidget {
       ),
       body: Column(
         children: [
+          Flexible(
+              flex: 2,
+              child: StartStop<WorkSession>(
+                      is_started: true,
+                      child: WorkSession(startTime: null, endTime: null))
+                  .buildRecipe(
+                onChanged: (p1) {
+                  print(p1.toJson());
+                },
+              )),
           Flexible(
               flex: 10,
               child: BasicList<Project>(items: projectViewModel.projects)

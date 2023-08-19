@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:work_time_app/models/Project.dart';
+import 'package:work_time_app/models/basic_neutral.dart';
+import 'package:work_time_app/models/basic_string.dart';
 
 import '../util/recipeable.dart';
 
@@ -42,7 +44,12 @@ class ClassRecipe<T extends Recipeable> extends StatelessWidget {
 
         //print("full model ${item.toJson()}");
         // print("attr model json ${attributeName} ${attributeJson}");
-        final model = fromJson(attributeJson, attrname: attributeName);
+        late final Recipeable model;
+        if (attributeJson == null) {
+          model = BasicNeutral();
+        } else {
+          model = fromJson(attributeJson, attrname: attributeName);
+        }
         //return Container();
         return Wrap(
           alignment: WrapAlignment.start,
