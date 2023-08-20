@@ -46,6 +46,9 @@ dependencies:
   json_serializable: ^6.6.2
   build_runner: ^2.3.3
   json_annotation: ^4.8.1
+  flutter_auth_ui: ^3.1.0
+  supabase_auth_ui: ^0.2.1
+  supabase_flutter: ^1.10.13
 
 dev_dependencies:
   flutter_test:
