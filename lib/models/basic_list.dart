@@ -11,6 +11,7 @@ class BasicList<T extends Recipeable> implements Recipeable {
   final List<T> items;
   final bool selectable;
   final int? selectedIndex;
+  @JsonKey(includeFromJson: false, includeToJson: false)
   final void Function()? onAdd;
   //TODO: can these "interactive abilities" somehow be aggregated and generalized in a formal way for all recipeables? The above (at least some form of derived state) and especially this callback!
   // also when duplicating new instances these variables need to be taken care of each individually...

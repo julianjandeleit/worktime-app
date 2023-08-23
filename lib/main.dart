@@ -48,8 +48,6 @@ void main() async {
 }
 
 class WorkTimeApp extends StatelessWidget {
-  WorkTimeApp();
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -60,7 +58,7 @@ class WorkTimeApp extends StatelessWidget {
       initialRoute: '/login',
       routes: {
         '/login': (context) => SupAuth(),
-        '/': (context) => WorkTimeApp(),
+        '/': (context) => Workspace(),
       },
     );
   }

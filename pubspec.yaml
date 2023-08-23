@@ -49,6 +49,7 @@ dependencies:
   flutter_auth_ui: ^3.1.0
   supabase_auth_ui: ^0.2.1
   supabase_flutter: ^1.10.13
+  file: ^6.1.4
 
 dev_dependencies:
   flutter_test:
