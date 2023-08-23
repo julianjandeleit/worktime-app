@@ -39,6 +39,8 @@ class ProjectViewModel extends ChangeNotifier {
 
       Uint16List bytes = Uint16List.fromList(jsonEncode(toJson()).codeUnits);
 
+      //TODO: backend storage should eventually be factored out and injected as an abstract persistant storage handler
+
       var file = MemoryFileSystem().file('test.json')..writeAsBytesSync(bytes);
 
       String filename = '$userID.json';
@@ -75,6 +77,29 @@ class ProjectViewModel extends ChangeNotifier {
   void deleteProject(Project project) {
     projects.remove(project);
     notifyListeners(); // Notify listeners of the data change
+  }
+
+  static Future<ProjectViewModel?> from_user() async {
+    final supabase = Supabase.instance.client;
+    //only store for valid users
+    if (supabase.auth.currentUser == null) {
+      print("current user is null");
+      return null;
+    }
+    final userID = supabase.auth.currentUser!.id;
+
+    String filename = '$userID.json';
+    try {
+      Uint8List response =
+          await supabase.storage.from('userdata').download(filename);
+      String content = String.fromCharCodes(response);
+
+      return ProjectViewModel.fromJson(jsonDecode(content));
+    } catch (e) {
+      return ProjectViewModel();
+    }
+
+    return null;
   }
 
   /// Connect the generated [_$PersonFromJson] function to the `fromJson`

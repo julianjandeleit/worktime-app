@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
+import 'package:work_time_app/userprovider.dart';
+import 'package:provider/provider.dart' as pr;
 
 class SupAuth extends StatelessWidget {
   @override
@@ -15,9 +17,11 @@ class SupAuth extends StatelessWidget {
               socialProviders: [SocialProviders.google],
               colored: true,
               showSuccessSnackBar: true,
-              redirectUrl: null,
+              redirectUrl: "/",
               onSuccess: (p0) {
                 print("succeess");
+                //TODO: why is this not being called?
+                Navigator.pushNamed(context, "/");
               },
               onError: (error) {
                 print("error");

@@ -11,6 +11,7 @@ import 'models/Project.dart';
 import 'models/basic_list.dart';
 import 'userDataProvider.dart';
 import 'login.dart';
+import 'userprovider.dart';
 import 'viewmodels/WorkSessionViewModel.dart';
 import 'workspace.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -39,8 +40,9 @@ void main() async {
     MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) => UserDataProvider()),
-        ChangeNotifierProvider(create: (_) => ProjectViewModel()),
-        ChangeNotifierProvider(create: (_) => WorkSessionViewModel())
+        //    ChangeNotifierProvider(create: (_) => ProjectViewModel()),
+        ChangeNotifierProvider(create: (_) => WorkSessionViewModel()),
+        ChangeNotifierProvider(create: (_) => UserProvider(null))
       ],
       child: WorkTimeApp(),
     ),

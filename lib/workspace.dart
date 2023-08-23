@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' as sf;
 import 'package:work_time_app/models/RDatetime.dart';
 import 'package:work_time_app/models/basic_list.dart';
 import 'package:work_time_app/models/start_stop.dart';
 import 'package:work_time_app/recipes/classrecipe.dart';
+import 'package:work_time_app/userprovider.dart';
 import 'package:work_time_app/util/recipeable.dart';
 import 'models/Project.dart'; // Adjust the import path as needed
 import 'models/WorkSession.dart'; // Adjust the import path as needed
@@ -15,9 +17,53 @@ import 'views/WorkSessionView.dart'; // Adjust the import path as needed
 class Workspace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final projectViewModel = Provider.of<ProjectViewModel>(context);
-    final workSessionViewModel = Provider.of<WorkSessionViewModel>(context);
+    final supabase = sf.Supabase.instance.client;
+    final user = Provider.of<UserProvider>(context).currentUser;
 
+    if (supabase.auth.currentUser != null && user == null) {
+      Provider.of<UserProvider>(context).currentUser =
+          supabase.auth.currentUser;
+      Provider.of<UserProvider>(context).notifyListeners();
+    }
+    //only store for valid users
+    if (user == null) {
+      return Text("You are not logged in, please log in first");
+    } else {
+      return FutureBuilder(
+          future: ProjectViewModel.from_user(),
+          builder: (context, snap) {
+            return snap.data != null
+                ? MultiProvider(
+                    providers: [
+                      ChangeNotifierProvider<ProjectViewModel>(
+                          create: (context) => snap.data != null
+                              ? snap.data!
+                              : ProjectViewModel())
+                    ],
+                    child: Builder(builder: (context) {
+                      final projectViewModel =
+                          Provider.of<ProjectViewModel>(context);
+                      print("building with ${projectViewModel.toJson()}");
+                      return MainWidget(projectViewModel: projectViewModel);
+                    }),
+                  )
+                : Text(
+                    "retrieving data: ${snap.connectionState} ${snap.data} ${user?.id}");
+          });
+    }
+  }
+}
+
+class MainWidget extends StatelessWidget {
+  const MainWidget({
+    super.key,
+    required this.projectViewModel,
+  });
+
+  final ProjectViewModel projectViewModel;
+
+  @override
+  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('Workspace'),
