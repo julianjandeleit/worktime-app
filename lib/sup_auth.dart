@@ -13,7 +13,7 @@ class SupAuth extends StatelessWidget {
             child: Column(
           children: [
             Text(supabase.auth.currentUser?.email ?? "no user"),
-            SupaSocialsAuth(
+            /*SupaSocialsAuth(
               socialProviders: [SocialProviders.google],
               colored: true,
               showSuccessSnackBar: true,
@@ -28,7 +28,7 @@ class SupAuth extends StatelessWidget {
               onError: (error) {
                 print("error");
               },
-            ),
+            ),*/
           ],
         )));
   }

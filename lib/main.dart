@@ -2,15 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart' as pr;
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:work_time_app/firebase_options.dart';
 import 'package:work_time_app/models/WorkSession.dart';
 import 'package:work_time_app/sup_auth.dart';
 import 'package:work_time_app/viewmodels/ProjectViewModel.dart';
 import 'models/Project.dart';
 import 'models/basic_list.dart';
-import 'userDataProvider.dart';
-import 'login.dart';
 import 'userprovider.dart';
 import 'viewmodels/WorkSessionViewModel.dart';
 import 'workspace.dart';
@@ -41,7 +38,6 @@ void main() async {
   runApp(
     pr.MultiProvider(
       providers: [
-        pr.ChangeNotifierProvider(create: (_) => UserDataProvider()),
         pr.ChangeNotifierProvider(create: (_) => ProjectViewModel()),
         pr.ChangeNotifierProvider(create: (_) => WorkSessionViewModel()),
         pr.ChangeNotifierProvider(create: (_) => UserProvider(null))
