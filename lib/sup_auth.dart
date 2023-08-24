@@ -13,14 +13,15 @@ class SupAuth extends StatelessWidget {
             child: Column(
           children: [
             Text(supabase.auth.currentUser?.email ?? "no user"),
-            /*SupaSocialsAuth(
+            SupaSocialsAuth(
               socialProviders: [SocialProviders.google],
               colored: true,
               showSuccessSnackBar: true,
-              redirectUrl: "/", //somehow this has no effect. or does it??
+              redirectUrl:
+                  "/login", // uri of this page using Uri.base somehow gets not recognized because of frament (#access_token=...) maybe
               onSuccess: (p0) {
-                //print("succeess ${Uri.base.toString()}");
-                //TODO: why is this not being called?
+                print("succeess ${Uri.base.toString()}");
+                //NOTE: why is this not being called? -> because domain need to be in allowed list in supabase
 
                 //somehow only called when already logged in. maybe because redirect doesn't work properly?
                 Navigator.pushNamed(context, "/");
@@ -28,7 +29,7 @@ class SupAuth extends StatelessWidget {
               onError: (error) {
                 print("error");
               },
-            ),*/
+            ),
           ],
         )));
   }

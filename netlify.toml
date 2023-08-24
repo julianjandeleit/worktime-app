@@ -7,6 +7,7 @@
 
 [[headers]]
   # Define which paths this specific [[headers]] block will cover.
+  # TODO: I think this now is superfluous
   for = "/*"
     [headers.values]
     Access-Control-Allow-Origin = "*"
