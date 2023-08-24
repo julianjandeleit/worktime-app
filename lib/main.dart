@@ -16,6 +16,8 @@ import 'viewmodels/WorkSessionViewModel.dart';
 import 'workspace.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
@@ -66,6 +68,7 @@ class WorkTimeApp extends StatelessWidget {
 
     return MaterialApp(
       title: 'WorkTime App',
+      navigatorKey: navigatorKey,
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:supabase_flutter/supabase_flutter.dart' as sf;
+import 'package:work_time_app/main.dart';
 import 'package:work_time_app/models/RDatetime.dart';
 import 'package:work_time_app/models/basic_list.dart';
 import 'package:work_time_app/models/start_stop.dart';
@@ -26,9 +27,13 @@ class Workspace extends StatelessWidget {
       return Builder(builder: (context) {
         final projectViewModel = Provider.of<ProjectViewModel>(context);
         print("building with ${projectViewModel.toJson()}");
-        return MainWidget(
-            userName: supabase.auth.currentUser!.email ?? "no email provided",
-            projectViewModel: projectViewModel);
+        if (projectViewModel.is_loading == false) {
+          return MainWidget(
+              userName: supabase.auth.currentUser!.email ?? "no email provided",
+              projectViewModel: projectViewModel);
+        } else {
+          return Scaffold(body: Text("loading data"));
+        }
       });
     }
   }
@@ -53,8 +58,13 @@ class MainWidget extends StatelessWidget {
           IconButton(
             onPressed: () {
               // Perform any actions you want here
+              sf.Supabase.instance.client.auth.signOut().then((value) {
+                print("navContext: ${navigatorKey.currentContext}");
+                Navigator.of(navigatorKey.currentContext!)
+                    .popAndPushNamed("/login");
+              });
             },
-            icon: Icon(Icons.more_vert),
+            icon: Icon(Icons.exit_to_app),
           ),
         ],
       ),

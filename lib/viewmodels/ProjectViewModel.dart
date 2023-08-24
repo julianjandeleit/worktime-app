@@ -27,6 +27,9 @@ class ProjectViewModel extends ChangeNotifier {
   List<Project> get projects => _projects;
   set projects(List<Project> projects) => _projects = projects;
 
+  @JsonKey(includeFromJson: false, includeToJson: false)
+  bool is_loading = false;
+
   ProjectViewModel() {
     final supabase = Supabase.instance.client;
 
@@ -68,6 +71,7 @@ class ProjectViewModel extends ChangeNotifier {
   }
 
   Future<void> updateFromUser() async {
+    is_loading = true;
     final newModel = await ProjectViewModel.from_user();
 
     print("building model: $newModel");
@@ -77,6 +81,7 @@ class ProjectViewModel extends ChangeNotifier {
     _projects = newModel._projects;
     selectedProjectIndex = newModel.selectedProjectIndex;
     startStopWorkSession = newModel.startStopWorkSession;
+    is_loading = false;
   }
 
   void addProject(String projectName) {

@@ -21,7 +21,9 @@ class SupAuth extends StatelessWidget {
               onSuccess: (p0) {
                 //print("succeess ${Uri.base.toString()}");
                 //TODO: why is this not being called?
-                //Navigator.pushNamed(context, "/");
+
+                //somehow only called when already logged in. maybe because redirect doesn't work properly?
+                Navigator.pushNamed(context, "/");
               },
               onError: (error) {
                 print("error");
