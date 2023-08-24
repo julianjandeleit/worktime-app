@@ -18,38 +18,18 @@ class Workspace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final supabase = sf.Supabase.instance.client;
-    final user = Provider.of<UserProvider>(context).currentUser;
-
-    if (supabase.auth.currentUser != null && user == null) {
-      Provider.of<UserProvider>(context).currentUser =
-          supabase.auth.currentUser;
-      Provider.of<UserProvider>(context).notifyListeners();
-    }
+    print("building workspace ${supabase.auth.currentUser?.id}");
     //only store for valid users
-    if (user == null) {
+    if (supabase.auth.currentUser == null) {
       return Text("You are not logged in, please log in first");
     } else {
-      return FutureBuilder(
-          future: ProjectViewModel.from_user(),
-          builder: (context, snap) {
-            return snap.data != null
-                ? MultiProvider(
-                    providers: [
-                      ChangeNotifierProvider<ProjectViewModel>(
-                          create: (context) => snap.data != null
-                              ? snap.data!
-                              : ProjectViewModel())
-                    ],
-                    child: Builder(builder: (context) {
-                      final projectViewModel =
-                          Provider.of<ProjectViewModel>(context);
-                      print("building with ${projectViewModel.toJson()}");
-                      return MainWidget(projectViewModel: projectViewModel);
-                    }),
-                  )
-                : Text(
-                    "retrieving data: ${snap.connectionState} ${snap.data} ${user?.id}");
-          });
+      return Builder(builder: (context) {
+        final projectViewModel = Provider.of<ProjectViewModel>(context);
+        print("building with ${projectViewModel.toJson()}");
+        return MainWidget(
+            userName: supabase.auth.currentUser!.email ?? "no email provided",
+            projectViewModel: projectViewModel);
+      });
     }
   }
 }
@@ -57,16 +37,18 @@ class Workspace extends StatelessWidget {
 class MainWidget extends StatelessWidget {
   const MainWidget({
     super.key,
+    required this.userName,
     required this.projectViewModel,
   });
 
+  final String userName;
   final ProjectViewModel projectViewModel;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Workspace'),
+        title: Text('Workspace for ${userName}'),
         actions: [
           IconButton(
             onPressed: () {

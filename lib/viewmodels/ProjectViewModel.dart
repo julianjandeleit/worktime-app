@@ -28,9 +28,10 @@ class ProjectViewModel extends ChangeNotifier {
   set projects(List<Project> projects) => _projects = projects;
 
   ProjectViewModel() {
+    final supabase = Supabase.instance.client;
+
     //listener should handle persistent storage. It gets triggered whenever the data changes.
     addListener(() async {
-      final supabase = Supabase.instance.client;
       //only store for valid users
       if (supabase.auth.currentUser == null) {
         return;
@@ -64,6 +65,18 @@ class ProjectViewModel extends ChangeNotifier {
       //       await supabase.storage.from("userdata").update('$userID.json', file);
       //   print("response from saving: $response ${toJson().toString()}");
     });
+  }
+
+  Future<void> updateFromUser() async {
+    final newModel = await ProjectViewModel.from_user();
+
+    print("building model: $newModel");
+    if (newModel == null) {
+      return;
+    }
+    _projects = newModel._projects;
+    selectedProjectIndex = newModel.selectedProjectIndex;
+    startStopWorkSession = newModel.startStopWorkSession;
   }
 
   void addProject(String projectName) {

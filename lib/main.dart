@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
-import 'package:provider/provider.dart';
+import 'package:provider/provider.dart' as pr;
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:work_time_app/firebase_options.dart';
 import 'package:work_time_app/models/WorkSession.dart';
@@ -37,12 +37,12 @@ void main() async {
   //     clientId: DefaultFirebaseOptions.currentPlatform.appId);
 
   runApp(
-    MultiProvider(
+    pr.MultiProvider(
       providers: [
-        ChangeNotifierProvider(create: (_) => UserDataProvider()),
-        //    ChangeNotifierProvider(create: (_) => ProjectViewModel()),
-        ChangeNotifierProvider(create: (_) => WorkSessionViewModel()),
-        ChangeNotifierProvider(create: (_) => UserProvider(null))
+        pr.ChangeNotifierProvider(create: (_) => UserDataProvider()),
+        pr.ChangeNotifierProvider(create: (_) => ProjectViewModel()),
+        pr.ChangeNotifierProvider(create: (_) => WorkSessionViewModel()),
+        pr.ChangeNotifierProvider(create: (_) => UserProvider(null))
       ],
       child: WorkTimeApp(),
     ),
@@ -52,6 +52,18 @@ void main() async {
 class WorkTimeApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    final supabase = Supabase.instance.client;
+    //listener to update when user is selected so that current state is showing
+    supabase.auth.onAuthStateChange.listen(
+      (event) async {
+        print("new auth state: ${supabase.auth.currentUser?.id}");
+        final projectViewModel =
+            pr.Provider.of<ProjectViewModel>(context, listen: false);
+        await projectViewModel.updateFromUser();
+        projectViewModel.notifyListeners();
+      },
+    );
+
     return MaterialApp(
       title: 'WorkTime App',
       theme: ThemeData(

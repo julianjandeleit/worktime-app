@@ -17,11 +17,11 @@ class SupAuth extends StatelessWidget {
               socialProviders: [SocialProviders.google],
               colored: true,
               showSuccessSnackBar: true,
-              redirectUrl: "/",
+              redirectUrl: "/", //somehow this has no effect. or does it??
               onSuccess: (p0) {
-                print("succeess");
+                //print("succeess ${Uri.base.toString()}");
                 //TODO: why is this not being called?
-                Navigator.pushNamed(context, "/");
+                //Navigator.pushNamed(context, "/");
               },
               onError: (error) {
                 print("error");
