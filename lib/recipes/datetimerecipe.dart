@@ -20,18 +20,33 @@ class _DatetimeRecipeState extends State<DatetimeRecipe> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
-    final DateTime? picked = await showDatePicker(
+    final DateTime? pickedDate = await showDatePicker(
       context: context,
       initialDate: _selectedDate,
       firstDate: DateTime(2000),
       lastDate: DateTime(2101),
     );
 
-    if (picked != null && picked != _selectedDate) {
-      setState(() {
-        _selectedDate = picked;
-        widget.onChanged(_selectedDate);
-      });
+    if (pickedDate != null && pickedDate != _selectedDate) {
+      final TimeOfDay? pickedTime = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.fromDateTime(_selectedDate),
+      );
+
+      if (pickedTime != null) {
+        final DateTime newDateTime = DateTime(
+          pickedDate.year,
+          pickedDate.month,
+          pickedDate.day,
+          pickedTime.hour,
+          pickedTime.minute,
+        );
+
+        setState(() {
+          _selectedDate = newDateTime;
+          widget.onChanged(_selectedDate);
+        });
+      }
     }
   }
 
