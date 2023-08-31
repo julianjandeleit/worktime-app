@@ -17,8 +17,8 @@ class SupAuth extends StatelessWidget {
               socialProviders: [SocialProviders.google],
               colored: true,
               showSuccessSnackBar: true,
-              redirectUrl:
-                  "/login", // uri of this page using Uri.base somehow gets not recognized because of frament (#access_token=...) maybe
+              redirectUrl: Uri.base
+                  .toString(), // uri of this page using Uri.base somehow gets not recognized because of frament (#access_token=...) maybe
               onSuccess: (p0) {
                 print("succeess ${Uri.base.toString()}");
                 //NOTE: why is this not being called? -> because domain need to be in allowed list in supabase
