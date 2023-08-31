@@ -72,7 +72,7 @@ class MainWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'Your Projects',
+            'Selected Project',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -80,10 +80,16 @@ class MainWidget extends StatelessWidget {
           ),
         ),
         Flexible(
-            child: Text(projectViewModel.selectedProjectIndex != null
-                ? projectViewModel
-                    .projects[projectViewModel.selectedProjectIndex!].name.item
-                : "not selected")),
+            child: Text(
+          projectViewModel.selectedProjectIndex != null
+              ? projectViewModel
+                  .projects[projectViewModel.selectedProjectIndex!].name.item
+              : "not selected",
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.w400,
+          ),
+        )),
         Flexible(
             flex: 3,
             child: Padding(
@@ -131,6 +137,13 @@ class MainWidget extends StatelessWidget {
                 },
               ),
             )),
+        Text(
+          'Your Projects',
+          style: TextStyle(
+            fontSize: 24,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
         Flexible(
             flex: 10,
             child: BasicList<Project>(

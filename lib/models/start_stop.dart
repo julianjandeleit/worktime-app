@@ -41,9 +41,11 @@ class StartStop<T extends Recipeable> implements Recipeable {
             },
             isClickable: this.is_started == true,
           ),
-          child.buildRecipe(
-            onChanged: (p0) => onChanged
-                ?.call(StartStop(is_started: is_started, child: p0 as T)),
+          Flexible(
+            child: child.buildRecipe(
+              onChanged: (p0) => onChanged
+                  ?.call(StartStop(is_started: is_started, child: p0 as T)),
+            ),
           )
         ]
             .map((e) => Flexible(

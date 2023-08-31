@@ -8,7 +8,8 @@ class SupAuth extends StatelessWidget {
   Widget build(BuildContext context) {
     final supabase = Supabase.instance.client;
     return Scaffold(
-        appBar: AppBar(title: Text('Authentication')),
+        appBar:
+            AppBar(title: Text('Authentication ${Uri.base.origin.toString()}')),
         body: Center(
             child: Column(
           children: [
@@ -17,7 +18,7 @@ class SupAuth extends StatelessWidget {
               socialProviders: [SocialProviders.google],
               colored: true,
               showSuccessSnackBar: true,
-              redirectUrl: Uri.base
+              redirectUrl: Uri.base.origin
                   .toString(), // uri of this page using Uri.base somehow gets not recognized because of frament (#access_token=...) maybe
               onSuccess: (p0) {
                 print("succeess ${Uri.base.toString()}");
