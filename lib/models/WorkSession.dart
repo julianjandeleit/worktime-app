@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_grid_view/flutter_staggered_grid_view.dart';
+import 'package:intl/intl.dart';
 import 'package:work_time_app/recipes/classrecipe.dart';
 
 import '../util/recipeable.dart';
@@ -28,7 +30,77 @@ class WorkSession implements Recipeable {
 
   @override
   Widget buildRecipe({void Function(Recipeable p1)? onChanged}) {
-//    return Text("work session");
+    final widgets = [
+      Align(
+        alignment: Alignment.center,
+        child: Text(
+          "Start-, Endtime",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Align(
+        alignment: Alignment.center,
+        child: Text(
+          "Duration",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
+      ),
+      Container(
+        padding: EdgeInsets.only(top: 25, bottom: 25),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+                "${startTime!.item.hour.toString().padLeft(2, '0')}:${startTime!.item.minute.toString().padLeft(2, '0')}"),
+            endTime != null
+                ? Text(
+                    "${endTime!.item.day != startTime!.item.day ? "(" + endTime!.item.day.toString() + ".) " : ""}${endTime!.item.hour.toString().padLeft(2, '0')}:${endTime!.item.minute.toString().padLeft(2, '0')}")
+                : const Text("..."),
+          ],
+        ),
+      ),
+      Align(
+        alignment: Alignment.center,
+        child: Builder(
+          builder: (context) {
+            var timeDelayEnd = endTime?.item ?? DateTime.now();
+
+            var delay = timeDelayEnd.difference(startTime!.item);
+            var hours = delay.inHours;
+            var minutes = delay.inMinutes;
+            minutes = minutes % 60;
+
+            return Text(
+                "${hours.toString().padLeft(2, '0')}:${minutes.toString().padLeft(2, '0')}");
+          },
+        ),
+      ),
+    ];
+
+    //return Text("hi");
+
+    return startTime != null
+        ? Column(
+            children: [
+              Container(
+                padding: const EdgeInsets.all(8),
+                child: Text(
+                    "${startTime!.item.day}. ${DateFormat('MMMM').format(startTime!.item)} ${startTime!.item.year}"),
+              ),
+              AlignedGridView.count(
+                shrinkWrap: true,
+                itemCount: 4,
+                crossAxisCount: 2,
+                mainAxisSpacing: 4,
+                crossAxisSpacing: 4,
+                itemBuilder: (context, index) {
+                  return widgets[index];
+                },
+              )
+            ],
+          )
+        : Text("not set");
 
     return ClassRecipe<WorkSession>(
       name: "WorkSession",
