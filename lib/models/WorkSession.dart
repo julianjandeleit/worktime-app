@@ -112,7 +112,7 @@ class WorkSession implements Recipeable {
                         throw ArgumentError();
                       },
                       onChanged: (p0) {
-                        print("changed to ${p0.toJson()}");
+                        //print("changed to ${p0.toJson()}");
                         onChanged?.call(p0);
                       },
                     ),
