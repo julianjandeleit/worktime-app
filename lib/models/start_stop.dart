@@ -27,34 +27,42 @@ class StartStop<T extends Recipeable> implements Recipeable {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          CustomCircularButton(
-            buttonText: "start recording",
-            onPressed: () {
-              onChanged?.call(StartStop(is_started: true, child: child));
-            },
-            isClickable: this.is_started == false,
-          ),
-          CustomCircularButton(
-            buttonText: "stop recording",
-            onPressed: () {
-              onChanged?.call(StartStop(is_started: false, child: child));
-            },
-            isClickable: this.is_started == true,
-          ),
-          Flexible(
-            child: child.buildRecipe(
-              onChanged: (p0) => onChanged
-                  ?.call(StartStop(is_started: is_started, child: p0 as T)),
-            ),
-          )
-        ]
-            .map((e) => Flexible(
-                  child: Container(
-                      child: Center(
-                    child: e,
-                  )),
-                ))
-            .toList());
+              CustomCircularButton(
+                buttonText: "start recording",
+                onPressed: () {
+                  onChanged?.call(StartStop(is_started: true, child: child));
+                },
+                isClickable: this.is_started == false,
+              ),
+              CustomCircularButton(
+                buttonText: "stop recording",
+                onPressed: () {
+                  onChanged?.call(StartStop(is_started: false, child: child));
+                },
+                isClickable: this.is_started == true,
+              ),
+            ]
+                .map((e) => Flexible(
+                      child: Container(
+                          child: Center(
+                        child: e,
+                      )),
+                    ) as Widget)
+                .toList() +
+            <Widget>[
+              Flexible(
+                child: FittedBox(
+                  fit: BoxFit.scaleDown,
+                  child: SizedBox(
+                    width: 200,
+                    child: child.buildRecipe(
+                      onChanged: (p0) => onChanged?.call(
+                          StartStop(is_started: is_started, child: p0 as T)),
+                    ),
+                  ),
+                ),
+              )
+            ]);
   }
 }
 
@@ -63,10 +71,11 @@ class CustomCircularButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isClickable;
 
-  CustomCircularButton(
-      {required this.buttonText,
-      required this.onPressed,
-      required this.isClickable});
+  CustomCircularButton({
+    required this.buttonText,
+    required this.onPressed,
+    required this.isClickable,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -74,12 +83,23 @@ class CustomCircularButton extends StatelessWidget {
       onPressed: onPressed,
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.zero,
-        shape: const CircleBorder(),
+        shape: CircleBorder(),
         backgroundColor: isClickable ? Colors.blue : Colors.transparent,
         foregroundColor: Colors.white,
         side: isClickable ? BorderSide.none : BorderSide(color: Colors.blue),
       ),
-      child: Center(child: Text(buttonText)),
+      child: FittedBox(
+        fit: BoxFit.scaleDown,
+        child: SizedBox(
+          width: 100,
+          height: 100,
+          child: Center(
+            child: Text(
+              buttonText,
+            ),
+          ),
+        ),
+      ),
     );
   }
 }
