@@ -30,6 +30,10 @@ class WorkSession implements Recipeable {
 
   @override
   Widget buildRecipe({void Function(Recipeable p1)? onChanged}) {
+    if (startTime == null) {
+      return Text("not set");
+    }
+
     final widgets = [
       Align(
         alignment: Alignment.center,
@@ -80,13 +84,50 @@ class WorkSession implements Recipeable {
 
     //return Text("hi");
 
-    return startTime != null
-        ? Column(
+    return Builder(
+      builder: (context) {
+        return InkWell(
+          onLongPress: () {
+            // Open the ClassRecipe<WorkSession> here
+            showDialog(
+              context: context,
+              builder: (context) {
+                return AlertDialog(
+                  title: Text('Edit Work Session'),
+                  content: SizedBox(
+                    height: 300,
+                    width: 400,
+                    child: ClassRecipe<WorkSession>(
+                      name: "WorkSession",
+                      item: this,
+                      fromJson: (p0, {attrname}) {
+                        switch (attrname) {
+                          case null:
+                            return WorkSession.fromJson(p0);
+                          case "startTime":
+                            return RDatetime.fromJson(p0);
+                          case "endTime":
+                            return RDatetime.fromJson(p0);
+                        }
+                        throw ArgumentError();
+                      },
+                      onChanged: (p0) {
+                        print("changed to ${p0.toJson()}");
+                        onChanged?.call(p0);
+                      },
+                    ),
+                  ),
+                );
+              },
+            );
+          },
+          child: Column(
             children: [
               Container(
                 padding: const EdgeInsets.all(8),
                 child: Text(
-                    "${startTime!.item.day}. ${DateFormat('MMMM').format(startTime!.item)} ${startTime!.item.year}"),
+                  "${startTime!.item.day}. ${DateFormat('MMMM').format(startTime!.item)} ${startTime!.item.year}",
+                ),
               ),
               AlignedGridView.count(
                 shrinkWrap: true,
@@ -97,27 +138,11 @@ class WorkSession implements Recipeable {
                 itemBuilder: (context, index) {
                   return widgets[index];
                 },
-              )
+              ),
             ],
-          )
-        : Text("not set");
-
-    return ClassRecipe<WorkSession>(
-      name: "WorkSession",
-      item: this,
-      fromJson: (p0, {attrname}) {
-        switch (attrname) {
-          case null:
-            return WorkSession.fromJson(p0);
-          case "startTime":
-            return RDatetime.fromJson(p0);
-          case "endTime":
-            return RDatetime.fromJson(p0);
-        }
-
-        throw ArgumentError();
+          ),
+        );
       },
-      onChanged: (p0) => onChanged?.call(p0),
     );
   }
 }
