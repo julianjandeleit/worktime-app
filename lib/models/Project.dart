@@ -51,7 +51,7 @@ class Project extends Recipeable {
   Widget buildAggregation({void Function(Recipeable)? onChanged}) {
     return AggregationRecipe(
       heading: this.name.item,
-      names: ["worksessions", "total time"],
+      names: ["work sessions", "total time"],
       values: [
         this.workSessions.items.length.toString(),
         workSessions.items

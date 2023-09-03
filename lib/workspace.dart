@@ -103,7 +103,7 @@ class MainWidget extends StatelessWidget {
           ),
         ),
         Expanded(
-          flex: 5,
+          flex: 15,
           child: BasicList<Project>(
                   items: projectViewModel.projects,
                   onAdd: () {
@@ -119,7 +119,6 @@ class MainWidget extends StatelessWidget {
             projectViewModel.notifyListeners();
           }),
         ),
-        Flexible(flex: 10, child: Container())
       ]),
     );
   }
