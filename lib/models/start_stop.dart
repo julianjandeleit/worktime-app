@@ -7,7 +7,7 @@ import '../util/recipeable.dart';
 part 'start_stop.g.dart';
 
 @JsonSerializable(explicitToJson: true, genericArgumentFactories: true)
-class StartStop<T extends Recipeable> implements Recipeable {
+class StartStop<T extends Recipeable> extends Recipeable {
   bool is_started;
   T child;
   StartStop({required this.is_started, required this.child});
@@ -55,7 +55,7 @@ class StartStop<T extends Recipeable> implements Recipeable {
                   fit: BoxFit.scaleDown,
                   child: SizedBox(
                     width: 200,
-                    child: child.buildRecipe(
+                    child: child.buildAggregation(
                       onChanged: (p0) => onChanged?.call(
                           StartStop(is_started: is_started, child: p0 as T)),
                     ),

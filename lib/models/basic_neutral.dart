@@ -6,7 +6,7 @@ import '../util/recipeable.dart';
 part 'basic_neutral.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class BasicNeutral implements Recipeable {
+class BasicNeutral extends Recipeable {
   BasicNeutral();
 
   factory BasicNeutral.fromJson(Map<String, dynamic> json) =>

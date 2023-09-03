@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
@@ -65,6 +67,9 @@ class WorkTimeApp extends StatelessWidget {
     return MaterialApp(
       title: 'WorkTime App',
       navigatorKey: navigatorKey,
+      scrollBehavior: const MaterialScrollBehavior().copyWith(
+        dragDevices: {PointerDeviceKind.mouse},
+      ),
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),

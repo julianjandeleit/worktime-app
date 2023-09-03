@@ -58,7 +58,7 @@ class ListRecipe<T extends Recipeable> extends StatelessWidget {
                       },
                     ),
                   Expanded(
-                    child: itemList[index].buildRecipe(
+                    child: itemList[index].buildAggregation(
                       onChanged: (p0) {
                         final copiedList = [...itemList];
                         copiedList[index] = p0 as T;

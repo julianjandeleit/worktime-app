@@ -74,7 +74,7 @@ class MainWidget extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
-            'Selected Project',
+            'Work session will be saved to project:',
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.bold,
@@ -93,7 +93,7 @@ class MainWidget extends StatelessWidget {
           ),
         )),
         Flexible(
-            flex: 3,
+            flex: 6,
             child: StartStopWidget(projectViewModel: projectViewModel)),
         Text(
           'Your Projects',
@@ -102,22 +102,24 @@ class MainWidget extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        Flexible(
-            flex: 10,
-            child: BasicList<Project>(
-                    items: projectViewModel.projects,
-                    onAdd: () {
-                      projectViewModel.addProject("new Project");
-                    },
-                    selectable: true,
-                    selectedIndex: projectViewModel.selectedProjectIndex)
-                .buildRecipe(onChanged: (updated) {
-              //print("top level update ${updated}");
-              projectViewModel.projects = (updated as BasicList<Project>).items;
-              projectViewModel.selectedProjectIndex =
-                  (updated as BasicList<Project>).selectedIndex;
-              projectViewModel.notifyListeners();
-            })),
+        Expanded(
+          flex: 5,
+          child: BasicList<Project>(
+                  items: projectViewModel.projects,
+                  onAdd: () {
+                    projectViewModel.addProject("new Project");
+                  },
+                  selectable: true,
+                  selectedIndex: projectViewModel.selectedProjectIndex)
+              .buildAggregation(onChanged: (updated) {
+            //print("top level update ${updated}");
+            projectViewModel.projects = (updated as BasicList<Project>).items;
+            projectViewModel.selectedProjectIndex =
+                (updated as BasicList<Project>).selectedIndex;
+            projectViewModel.notifyListeners();
+          }),
+        ),
+        Flexible(flex: 10, child: Container())
       ]),
     );
   }

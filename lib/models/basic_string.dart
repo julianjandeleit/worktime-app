@@ -7,7 +7,7 @@ import '../util/recipeable.dart';
 part 'basic_string.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class BasicString implements Recipeable {
+class BasicString extends Recipeable {
   final String item;
 
   BasicString({required this.item});

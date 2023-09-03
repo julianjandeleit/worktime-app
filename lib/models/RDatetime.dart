@@ -7,7 +7,7 @@ import '../util/recipeable.dart';
 part 'RDatetime.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class RDatetime implements Recipeable {
+class RDatetime extends Recipeable {
   DateTime item;
 
   RDatetime({required this.item});

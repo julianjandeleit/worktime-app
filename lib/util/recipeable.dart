@@ -7,6 +7,9 @@ abstract class Recipeable {
 
   Widget buildRecipe({void Function(Recipeable)? onChanged});
 
+  Widget buildAggregation({void Function(Recipeable)? onChanged}) =>
+      buildRecipe(onChanged: onChanged);
+
   static T fromJson<T>(Map<String, dynamic> json) {
     return _$SerializableFromJson<T>(json);
   }

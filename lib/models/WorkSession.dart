@@ -11,7 +11,7 @@ import 'RDatetime.dart';
 part 'WorkSession.g.dart';
 
 @JsonSerializable(explicitToJson: true)
-class WorkSession implements Recipeable {
+class WorkSession extends Recipeable {
   final RDatetime? startTime;
   final RDatetime? endTime;
 
@@ -30,6 +30,29 @@ class WorkSession implements Recipeable {
 
   @override
   Widget buildRecipe({void Function(Recipeable p1)? onChanged}) {
+    return ClassRecipe<WorkSession>(
+      name: "WorkSession",
+      item: this,
+      fromJson: (p0, {attrname}) {
+        switch (attrname) {
+          case null:
+            return WorkSession.fromJson(p0);
+          case "startTime":
+            return RDatetime.fromJson(p0);
+          case "endTime":
+            return RDatetime.fromJson(p0);
+        }
+        throw ArgumentError();
+      },
+      onChanged: (p0) {
+        //print("changed to ${p0.toJson()}");
+        onChanged?.call(p0);
+      },
+    );
+  }
+
+  @override
+  Widget buildAggregation({void Function(Recipeable p1)? onChanged}) {
     if (startTime == null) {
       return Text("start time not set");
     }
@@ -95,28 +118,11 @@ class WorkSession implements Recipeable {
                 return AlertDialog(
                   title: Text('Edit Work Session'),
                   content: SizedBox(
-                    height: 300,
-                    width: 400,
-                    child: ClassRecipe<WorkSession>(
-                      name: "WorkSession",
-                      item: this,
-                      fromJson: (p0, {attrname}) {
-                        switch (attrname) {
-                          case null:
-                            return WorkSession.fromJson(p0);
-                          case "startTime":
-                            return RDatetime.fromJson(p0);
-                          case "endTime":
-                            return RDatetime.fromJson(p0);
-                        }
-                        throw ArgumentError();
-                      },
-                      onChanged: (p0) {
-                        //print("changed to ${p0.toJson()}");
-                        onChanged?.call(p0);
-                      },
-                    ),
-                  ),
+                      height: 300,
+                      width: 400,
+                      child: buildRecipe(
+                        onChanged: (p1) => onChanged?.call(p1),
+                      )),
                 );
               },
             );
