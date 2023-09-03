@@ -25,6 +25,7 @@ class ListRecipe<T extends Recipeable> extends StatelessWidget {
       decoration: const BoxDecoration(border: Border(left: BorderSide())),
       padding: const EdgeInsets.all(15),
       child: ListView.separated(
+        physics: ClampingScrollPhysics(),
         shrinkWrap: true,
         itemCount: itemList.length +
             (onAdd != null ? 1 : 0), // Add an extra item for the Add button

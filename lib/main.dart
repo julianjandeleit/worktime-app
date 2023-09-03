@@ -68,7 +68,14 @@ class WorkTimeApp extends StatelessWidget {
       title: 'WorkTime App',
       navigatorKey: navigatorKey,
       scrollBehavior: const MaterialScrollBehavior().copyWith(
-        dragDevices: {PointerDeviceKind.mouse},
+        dragDevices: {
+          PointerDeviceKind.mouse,
+          PointerDeviceKind.invertedStylus,
+          PointerDeviceKind.trackpad,
+          PointerDeviceKind.stylus,
+          PointerDeviceKind.touch,
+          PointerDeviceKind.unknown
+        },
       ),
       theme: ThemeData(
         primarySwatch: Colors.blue,
