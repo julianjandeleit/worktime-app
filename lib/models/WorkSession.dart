@@ -31,7 +31,7 @@ class WorkSession implements Recipeable {
   @override
   Widget buildRecipe({void Function(Recipeable p1)? onChanged}) {
     if (startTime == null) {
-      return Text("not set");
+      return Text("start time not set");
     }
 
     final widgets = [

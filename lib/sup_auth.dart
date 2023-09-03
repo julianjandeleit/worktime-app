@@ -13,7 +13,7 @@ class SupAuth extends StatelessWidget {
         body: Center(
             child: Column(
           children: [
-            Text(supabase.auth.currentUser?.email ?? "no user"),
+            Text(supabase.auth.currentUser?.email ?? "Please log in"),
             SupaSocialsAuth(
               socialProviders: [SocialProviders.google],
               colored: true,
@@ -31,6 +31,11 @@ class SupAuth extends StatelessWidget {
                 print("error");
               },
             ),
+            TextButton(
+                onPressed: () {
+                  Navigator.pushNamed(context, "/");
+                },
+                child: Text("continue without login"))
           ],
         )));
   }

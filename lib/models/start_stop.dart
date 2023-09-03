@@ -80,7 +80,7 @@ class CustomCircularButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-      onPressed: onPressed,
+      onPressed: isClickable ? onPressed : null,
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.zero,
         shape: CircleBorder(),

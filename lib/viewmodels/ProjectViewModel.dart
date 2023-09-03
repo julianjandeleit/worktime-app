@@ -32,11 +32,17 @@ class ProjectViewModel extends ChangeNotifier {
 
   ProjectViewModel() {
     final supabase = Supabase.instance.client;
+    _projects = [
+      Project(
+          name: BasicString(item: "My Default Project Name"),
+          workSessions: BasicList(items: []))
+    ];
+    selectedProjectIndex = 0;
 
     //listener should handle persistent storage. It gets triggered whenever the data changes.
     addListener(() async {
       //only store for valid users
-      if (supabase.auth.currentUser == null) {
+      if (!isLoggedIn()) {
         return;
       }
       final userID = supabase.auth.currentUser!.id;
@@ -70,18 +76,27 @@ class ProjectViewModel extends ChangeNotifier {
     });
   }
 
-  Future<void> updateFromUser() async {
-    is_loading = true;
-    final newModel = await ProjectViewModel.from_user();
+  bool isLoggedIn() {
+    final supabase = Supabase.instance.client;
+    return supabase.auth.currentUser != null;
+  }
 
-    print("building model: $newModel");
-    if (newModel == null) {
-      return;
+  Future<void> updateFromUser() async {
+    try {
+      is_loading = true;
+      final newModel = await ProjectViewModel.from_user();
+
+      print("building model: $newModel");
+      if (newModel == null) {
+        return;
+      }
+      _projects = newModel._projects;
+      selectedProjectIndex = newModel.selectedProjectIndex;
+      startStopWorkSession = newModel.startStopWorkSession;
+    } catch (error) {
+    } finally {
+      is_loading = false;
     }
-    _projects = newModel._projects;
-    selectedProjectIndex = newModel.selectedProjectIndex;
-    startStopWorkSession = newModel.startStopWorkSession;
-    is_loading = false;
   }
 
   void addProject(String projectName) {

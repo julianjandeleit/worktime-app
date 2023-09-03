@@ -19,23 +19,20 @@ class Workspace extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final supabase = sf.Supabase.instance.client;
-    print("building workspace ${supabase.auth.currentUser?.id}");
-    //only store for valid users
-    if (supabase.auth.currentUser == null) {
-      return Text("You are not logged in, please log in first");
-    } else {
-      return Builder(builder: (context) {
-        final projectViewModel = Provider.of<ProjectViewModel>(context);
-        print("building with ${projectViewModel.toJson()}");
-        if (projectViewModel.is_loading == false) {
-          return MainWidget(
-              userName: supabase.auth.currentUser!.email ?? "no email provided",
-              projectViewModel: projectViewModel);
-        } else {
-          return Scaffold(body: Text("loading data"));
-        }
-      });
-    }
+
+    return Builder(builder: (context) {
+      final projectViewModel = Provider.of<ProjectViewModel>(context);
+      print("building with ${projectViewModel.toJson()}");
+      if (projectViewModel.is_loading == false) {
+        return MainWidget(
+            userName: projectViewModel.isLoggedIn()
+                ? supabase.auth.currentUser?.email ?? "no email provided"
+                : "not logged in",
+            projectViewModel: projectViewModel);
+      } else {
+        return Scaffold(body: Text("loading data"));
+      }
+    });
   }
 }
 
@@ -69,6 +66,11 @@ class MainWidget extends StatelessWidget {
         ],
       ),
       body: Column(children: [
+        if (!projectViewModel.isLoggedIn())
+          Text(
+            "you are not logged in so your data will not be saved",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
         Padding(
           padding: const EdgeInsets.all(16.0),
           child: Text(
@@ -92,51 +94,7 @@ class MainWidget extends StatelessWidget {
         )),
         Flexible(
             flex: 3,
-            child: Padding(
-              padding: const EdgeInsets.all(25.0),
-              child: projectViewModel.startStopWorkSession.buildRecipe(
-                onChanged: (p1) {
-                  if (projectViewModel.selectedProjectIndex == null) {
-                    return;
-                  }
-
-                  var update = p1 as StartStop<WorkSession>;
-
-                  if (update.is_started == true &&
-                      projectViewModel.startStopWorkSession.is_started ==
-                          false) {
-                    // just started recording
-                    update.child = WorkSession(
-                        startTime: RDatetime(item: DateTime.now()),
-                        endTime: null);
-                  }
-                  if (update.is_started == false &&
-                      projectViewModel.startStopWorkSession.is_started ==
-                          true) {
-                    // just stopped recording
-                    update.child = WorkSession(
-                        startTime: update.child.startTime,
-                        endTime: RDatetime(item: DateTime.now()));
-
-                    projectViewModel.projects
-                        .elementAt(projectViewModel.selectedProjectIndex!)
-                        .workSessions
-                        .items
-                        .add(update.child);
-
-                    update = StartStop<WorkSession>(
-                        is_started: false,
-                        child: WorkSession(startTime: null, endTime: null));
-                  }
-
-                  // other cases are change in worksession
-
-                  projectViewModel.startStopWorkSession = update;
-
-                  projectViewModel.notifyListeners();
-                },
-              ),
-            )),
+            child: StartStopWidget(projectViewModel: projectViewModel)),
         Text(
           'Your Projects',
           style: TextStyle(
@@ -161,6 +119,61 @@ class MainWidget extends StatelessWidget {
               projectViewModel.notifyListeners();
             })),
       ]),
+    );
+  }
+}
+
+class StartStopWidget extends StatelessWidget {
+  const StartStopWidget({
+    super.key,
+    required this.projectViewModel,
+  });
+
+  final ProjectViewModel projectViewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(25.0),
+      child: projectViewModel.startStopWorkSession.buildRecipe(
+        onChanged: (p1) {
+          if (projectViewModel.selectedProjectIndex == null) {
+            return;
+          }
+
+          var update = p1 as StartStop<WorkSession>;
+
+          if (update.is_started == true &&
+              projectViewModel.startStopWorkSession.is_started == false) {
+            // just started recording
+            update.child = WorkSession(
+                startTime: RDatetime(item: DateTime.now()), endTime: null);
+          }
+          if (update.is_started == false &&
+              projectViewModel.startStopWorkSession.is_started == true) {
+            // just stopped recording
+            update.child = WorkSession(
+                startTime: update.child.startTime,
+                endTime: RDatetime(item: DateTime.now()));
+
+            projectViewModel.projects
+                .elementAt(projectViewModel.selectedProjectIndex!)
+                .workSessions
+                .items
+                .add(update.child);
+
+            update = StartStop<WorkSession>(
+                is_started: false,
+                child: WorkSession(startTime: null, endTime: null));
+          }
+
+          // other cases are change in worksession
+
+          projectViewModel.startStopWorkSession = update;
+
+          projectViewModel.notifyListeners();
+        },
+      ),
     );
   }
 }
