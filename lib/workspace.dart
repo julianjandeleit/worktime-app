@@ -88,6 +88,9 @@ class MainWidget extends StatelessWidget {
                   .projects[projectViewModel.selectedProjectIndex!].name.item
               : "not selected: select a project using the circle",
           style: TextStyle(
+            backgroundColor: projectViewModel.selectedProjectIndex != null
+                ? Colors.blueGrey.withOpacity(0.45)
+                : Colors.orange,
             fontSize: 24,
             fontWeight: FontWeight.w400,
           ),

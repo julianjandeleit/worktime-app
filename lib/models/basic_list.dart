@@ -31,6 +31,25 @@ class BasicList<T extends Recipeable> extends Recipeable {
   Map<String, dynamic> toJson() =>
       _$BasicListToJson<T>(this, (item) => item.toJson());
 
+  BasicList<T> buildChangedInstance(List<T> items) {
+    print("changed list");
+    var new_selected_index = null;
+    if (items.isEmpty) {
+      new_selected_index = null;
+    } else if (items.length > this.items.length) {
+      new_selected_index = selectedIndex;
+    } else if (items.length < this.items.length) {
+      new_selected_index = 0;
+    } else {
+      new_selected_index = selectedIndex;
+    }
+    return BasicList(
+        items: items,
+        selectable: selectable,
+        selectedIndex: new_selected_index,
+        onAdd: onAdd);
+  }
+
 //TODO: how to conceptualize differend kinds of views for the same data? new class? give option on onRecipe?
 // should other visualizations have other abilities?
 // some sort of visualizer class given as generic?
@@ -38,11 +57,7 @@ class BasicList<T extends Recipeable> extends Recipeable {
   Widget buildRecipe({void Function(Recipeable p1)? onChanged}) {
     return ListRecipe<T>(
       itemList: items,
-      onChanged: (items) => onChanged?.call(BasicList(
-          items: items,
-          selectable: selectable,
-          selectedIndex: selectedIndex,
-          onAdd: onAdd)),
+      onChanged: (items) => onChanged?.call(buildChangedInstance(items)),
       selectedIndex: selectedIndex,
       onItemSelect: selectable
           ? (index) {
@@ -61,11 +76,7 @@ class BasicList<T extends Recipeable> extends Recipeable {
   Widget buildAggregation({void Function(Recipeable p1)? onChanged}) {
     return AggListRecipe<T>(
       itemList: items,
-      onChanged: (items) => onChanged?.call(BasicList(
-          items: items,
-          selectable: selectable,
-          selectedIndex: selectedIndex,
-          onAdd: onAdd)),
+      onChanged: (items) => onChanged?.call(buildChangedInstance(items)),
       selectedIndex: selectedIndex,
       onItemSelect: selectable
           ? (index) {
