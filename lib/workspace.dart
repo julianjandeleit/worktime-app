@@ -86,7 +86,7 @@ class MainWidget extends StatelessWidget {
           projectViewModel.selectedProjectIndex != null
               ? projectViewModel
                   .projects[projectViewModel.selectedProjectIndex!].name.item
-              : "not selected: select a project using the circle",
+              : "not selected: select a project in the list below or create a new one by editing it",
           style: TextStyle(
             backgroundColor: projectViewModel.selectedProjectIndex != null
                 ? Colors.blueGrey.withOpacity(0.45)

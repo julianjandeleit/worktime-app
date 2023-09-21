@@ -7,7 +7,7 @@
 
 [[headers]]
   # Define which paths this specific [[headers]] block will cover.
-  # TODO: I think this now is superfluous
+  # TODO: I think this now is superfluous. -> it is NOT. Is it in the index.html not necessary anymore or do we need both?
   for = "/*"
     [headers.values]
     Access-Control-Allow-Origin = "*"
