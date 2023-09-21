@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+flutter build web --csp --web-renderer=canvaskit --release
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
