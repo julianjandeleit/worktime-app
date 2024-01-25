@@ -8,8 +8,8 @@ class AggregationRecipe extends StatefulWidget {
   //final void Function(String) onChanged;
   final Widget Function()? buildDetails;
 
-  AggregationRecipe(
-      {required this.heading,
+  const AggregationRecipe(
+      {super.key, required this.heading,
       required this.names,
       required this.values,
       this.buildDetails});
@@ -45,7 +45,7 @@ class _AggregationRecipeState extends State<AggregationRecipe> {
         alignment: Alignment.center,
         child: Text(
           e,
-          style: TextStyle(fontWeight: FontWeight.bold),
+          style: const TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
     );
@@ -55,7 +55,7 @@ class _AggregationRecipeState extends State<AggregationRecipe> {
         alignment: Alignment.center,
         child: Text(
           e,
-          style: TextStyle(fontWeight: FontWeight.normal),
+          style: const TextStyle(fontWeight: FontWeight.normal),
         ),
       ),
     );

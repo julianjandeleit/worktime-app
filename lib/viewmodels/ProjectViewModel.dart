@@ -1,12 +1,10 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:file/memory.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:work_time_app/models/RDatetime.dart';
 import 'package:work_time_app/models/WorkSession.dart';
 import 'package:work_time_app/models/basic_list.dart';
 import 'package:work_time_app/models/basic_string.dart';
@@ -93,7 +91,6 @@ class ProjectViewModel extends ChangeNotifier {
       _projects = newModel._projects;
       selectedProjectIndex = newModel.selectedProjectIndex;
       startStopWorkSession = newModel.startStopWorkSession;
-    } catch (error) {
     } finally {
       is_loading = false;
     }

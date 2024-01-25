@@ -5,17 +5,15 @@ import 'package:work_time_app/main.dart';
 import 'package:work_time_app/models/RDatetime.dart';
 import 'package:work_time_app/models/basic_list.dart';
 import 'package:work_time_app/models/start_stop.dart';
-import 'package:work_time_app/recipes/classrecipe.dart';
-import 'package:work_time_app/userprovider.dart';
-import 'package:work_time_app/util/recipeable.dart';
 import 'models/Project.dart'; // Adjust the import path as needed
 import 'models/WorkSession.dart'; // Adjust the import path as needed
 import 'viewmodels/ProjectViewModel.dart'; // Adjust the import path as needed
-import 'viewmodels/WorkSessionViewModel.dart'; // Adjust the import path as needed
-import 'views/ProjectView.dart';
-import 'views/WorkSessionView.dart'; // Adjust the import path as needed
+// Adjust the import path as needed
+// Adjust the import path as needed
 
 class Workspace extends StatelessWidget {
+  const Workspace({super.key});
+
   @override
   Widget build(BuildContext context) {
     final supabase = sf.Supabase.instance.client;
@@ -30,7 +28,7 @@ class Workspace extends StatelessWidget {
                 : "not logged in",
             projectViewModel: projectViewModel);
       } else {
-        return Scaffold(body: Text("loading data"));
+        return const Scaffold(body: Text("loading data"));
       }
     });
   }
@@ -50,7 +48,7 @@ class MainWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Workspace for ${userName}'),
+        title: Text('Workspace for $userName'),
         actions: [
           IconButton(
             onPressed: () {
@@ -61,18 +59,18 @@ class MainWidget extends StatelessWidget {
                     .popAndPushNamed("/login");
               });
             },
-            icon: Icon(Icons.exit_to_app),
+            icon: const Icon(Icons.exit_to_app),
           ),
         ],
       ),
       body: Column(children: [
         if (!projectViewModel.isLoggedIn())
-          Text(
+          const Text(
             "you are not logged in so your data will not be saved",
             style: TextStyle(fontWeight: FontWeight.bold),
           ),
-        Padding(
-          padding: const EdgeInsets.all(16.0),
+        const Padding(
+          padding: EdgeInsets.all(16.0),
           child: Text(
             'Work session will be saved to project:',
             style: TextStyle(
@@ -98,7 +96,7 @@ class MainWidget extends StatelessWidget {
         Flexible(
             flex: 6,
             child: StartStopWidget(projectViewModel: projectViewModel)),
-        Text(
+        const Text(
           'Your Projects',
           style: TextStyle(
             fontSize: 24,
@@ -118,7 +116,7 @@ class MainWidget extends StatelessWidget {
             //print("top level update ${updated}");
             projectViewModel.projects = (updated as BasicList<Project>).items;
             projectViewModel.selectedProjectIndex =
-                (updated as BasicList<Project>).selectedIndex;
+                (updated).selectedIndex;
             projectViewModel.notifyListeners();
           }),
         ),

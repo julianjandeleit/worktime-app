@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:work_time_app/recipes/listrecipe.dart';
 import 'package:work_time_app/util/recipeable.dart';
 
-import 'package:flutter/material.dart';
-import 'package:work_time_app/util/recipeable.dart';
 
 class AggListRecipe<T extends Recipeable> extends StatelessWidget {
   final List<T> itemList;
@@ -16,7 +14,7 @@ class AggListRecipe<T extends Recipeable> extends StatelessWidget {
 
   final void Function()? onAdd; // Add this property for the add button
 
-  AggListRecipe({
+  const AggListRecipe({super.key, 
     required this.itemList,
     required this.onChanged,
     this.selectedIndex,
@@ -26,7 +24,7 @@ class AggListRecipe<T extends Recipeable> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ScrollController _scrollController = ScrollController();
+    final ScrollController scrollController = ScrollController();
     return LayoutBuilder(builder: (context, constraints) {
       return Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -37,7 +35,7 @@ class AggListRecipe<T extends Recipeable> extends StatelessWidget {
                   context: context,
                   builder: (context) {
                     return AlertDialog(
-                      title: Text('Edit List'),
+                      title: const Text('Edit List'),
                       content: SizedBox(
                           height: 400,
                           width: 500,
@@ -79,14 +77,14 @@ class AggListRecipe<T extends Recipeable> extends StatelessWidget {
                       final offset = event.scrollDelta.direction *
                           event.scrollDelta.distance *
                           0.25;
-                      _scrollController
-                          .jumpTo(_scrollController.offset + offset);
+                      scrollController
+                          .jumpTo(scrollController.offset + offset);
                     }
                   },
                   child: Scrollbar(
-                    controller: _scrollController,
+                    controller: scrollController,
                     child: ListView.separated(
-                      controller: _scrollController,
+                      controller: scrollController,
                       scrollDirection: Axis.horizontal,
                       itemCount: itemList
                           .length, // Add an extra item for the Add button

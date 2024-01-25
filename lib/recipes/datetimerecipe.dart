@@ -4,7 +4,7 @@ class DatetimeRecipe extends StatefulWidget {
   final DateTime initialValue;
   final void Function(DateTime) onChanged;
 
-  DatetimeRecipe({required this.initialValue, required this.onChanged});
+  const DatetimeRecipe({super.key, required this.initialValue, required this.onChanged});
 
   @override
   _DatetimeRecipeState createState() => _DatetimeRecipeState();
@@ -55,17 +55,17 @@ class _DatetimeRecipeState extends State<DatetimeRecipe> {
     return InkWell(
       onTap: () => _selectDate(context),
       child: Container(
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         decoration: BoxDecoration(
           border: Border.all(color: Colors.grey),
           borderRadius: BorderRadius.circular(4.0),
         ),
         child: Row(
           children: [
-            Icon(Icons.calendar_today),
-            SizedBox(width: 8.0),
+            const Icon(Icons.calendar_today),
+            const SizedBox(width: 8.0),
             Text(_selectedDate.toLocal().toString(),
-                style: TextStyle(fontSize: 16.0)),
+                style: const TextStyle(fontSize: 16.0)),
           ],
         ),
       ),

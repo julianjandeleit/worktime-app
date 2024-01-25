@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
 import 'package:work_time_app/models/basic_list.dart';
-import 'package:work_time_app/models/basic_neutral.dart';
 import 'package:work_time_app/models/basic_string.dart';
 import 'package:work_time_app/recipes/aggregationrecipe.dart';
-import 'package:work_time_app/recipes/listrecipe.dart';
 
 import '../recipes/classrecipe.dart';
 import '../util/recipeable.dart';
@@ -50,20 +48,12 @@ class Project extends Recipeable {
   @override
   Widget buildAggregation({void Function(Recipeable)? onChanged}) {
     return AggregationRecipe(
-      heading: this.name.item,
-      names: ["work sessions", "total time"],
+      heading: name.item,
+      names: const ["work sessions", "total time", "This month"],
       values: [
-        this.workSessions.items.length.toString(),
-        workSessions.items
-                .map((e) =>
-                    e.endTime?.item
-                        .difference(e.startTime?.item ?? e.endTime!.item)
-                        .abs()
-                        .inMinutes ??
-                    0)
-                .fold(0, (p, e) => p + e)
-                .toString() +
-            " min"
+        workSessions.items.length.toString(),
+        "${workSessions.items.map((e) => e.endTime?.item.difference(e.startTime?.item ?? e.endTime!.item).abs().inMinutes ?? 0).fold(0, (p, e) => p + e)} min",
+        "${(workSessions.items.where((e) => e.startTime?.item.month == DateTime.now().month && e.startTime?.item.year == DateTime.now().year).map((e) => e.endTime?.item.difference(e.startTime?.item ?? e.endTime!.item).abs().inMinutes ?? 0).fold(0, (p, e) => p + e) / 60).toStringAsFixed(2)} hours"
       ],
       buildDetails: () => buildRecipe(
         onChanged: (p0) => onChanged?.call(p0),
@@ -77,5 +67,6 @@ class Project extends Recipeable {
       _$ProjectFromJson(json);
 
   /// Connect the generated [_$PersonToJson] function to the `toJson` method.
+  @override
   Map<String, dynamic> toJson() => _$ProjectToJson(this);
 }

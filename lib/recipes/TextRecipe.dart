@@ -4,7 +4,7 @@ class TextRecipe extends StatefulWidget {
   final String initialText;
   final void Function(String) onChanged;
 
-  TextRecipe({required this.initialText, required this.onChanged});
+  const TextRecipe({super.key, required this.initialText, required this.onChanged});
 
   @override
   _TextRecipeState createState() => _TextRecipeState();

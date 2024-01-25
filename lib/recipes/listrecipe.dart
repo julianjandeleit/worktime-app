@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:work_time_app/util/recipeable.dart';
 
-import 'package:flutter/material.dart';
-import 'package:work_time_app/util/recipeable.dart';
 
 class ListRecipe<T extends Recipeable> extends StatelessWidget {
   final List<T> itemList;
@@ -11,7 +9,7 @@ class ListRecipe<T extends Recipeable> extends StatelessWidget {
   final void Function(int index)? onItemSelect;
   final void Function()? onAdd; // Add this property for the add button
 
-  ListRecipe({
+  const ListRecipe({super.key, 
     required this.itemList,
     required this.onChanged,
     this.selectedIndex,
@@ -25,7 +23,7 @@ class ListRecipe<T extends Recipeable> extends StatelessWidget {
       decoration: const BoxDecoration(border: Border(left: BorderSide())),
       padding: const EdgeInsets.all(15),
       child: ListView.separated(
-        physics: ClampingScrollPhysics(),
+        physics: const ClampingScrollPhysics(),
         shrinkWrap: true,
         itemCount: itemList.length +
             (onAdd != null ? 1 : 0), // Add an extra item for the Add button
@@ -42,7 +40,7 @@ class ListRecipe<T extends Recipeable> extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     onPressed: () {
                       final copiedList = [...itemList];
                       copiedList.removeAt(index);

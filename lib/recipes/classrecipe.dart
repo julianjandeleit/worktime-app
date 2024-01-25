@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:work_time_app/models/Project.dart';
 import 'package:work_time_app/models/basic_neutral.dart';
-import 'package:work_time_app/models/basic_string.dart';
 
 import '../util/recipeable.dart';
 
@@ -12,7 +10,7 @@ class ClassRecipe<T extends Recipeable> extends StatelessWidget {
   // Important: this should call fromJson constructors, not pass on existing instances
   final Recipeable Function(Map<String, dynamic>, {String? attrname}) fromJson;
 
-  ClassRecipe({
+  const ClassRecipe({super.key, 
     required this.name,
     required this.item,
     required this.onChanged,
@@ -38,9 +36,9 @@ class ClassRecipe<T extends Recipeable> extends StatelessWidget {
             ),
           );
         }
-        final list_index = index - 1;
-        final attributeName = children.elementAt(list_index).key;
-        final attributeJson = children.elementAt(list_index).value;
+        final listIndex = index - 1;
+        final attributeName = children.elementAt(listIndex).key;
+        final attributeJson = children.elementAt(listIndex).value;
 
         //print("full model ${item.toJson()}");
         // print("attr model json ${attributeName} ${attributeJson}");

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
-import 'package:work_time_app/recipes/datetimerecipe.dart';
 
 import '../util/recipeable.dart';
 
@@ -47,9 +46,9 @@ class StartStop<T extends Recipeable> extends Recipeable {
                           child: Center(
                         child: e,
                       )),
-                    ) as Widget)
+                    ))
                 .toList() +
-            <Widget>[
+            <Flexible>[
               Flexible(
                 child: FittedBox(
                   fit: BoxFit.scaleDown,
@@ -71,7 +70,8 @@ class CustomCircularButton extends StatelessWidget {
   final VoidCallback onPressed;
   final bool isClickable;
 
-  CustomCircularButton({
+  const CustomCircularButton({
+    super.key,
     required this.buttonText,
     required this.onPressed,
     required this.isClickable,
@@ -83,10 +83,12 @@ class CustomCircularButton extends StatelessWidget {
       onPressed: isClickable ? onPressed : null,
       style: ElevatedButton.styleFrom(
         padding: EdgeInsets.zero,
-        shape: CircleBorder(),
+        shape: const CircleBorder(),
         backgroundColor: isClickable ? Colors.blue : Colors.transparent,
         foregroundColor: Colors.white,
-        side: isClickable ? BorderSide.none : BorderSide(color: Colors.blue),
+        side: isClickable
+            ? BorderSide.none
+            : const BorderSide(color: Colors.blue),
       ),
       child: FittedBox(
         fit: BoxFit.scaleDown,

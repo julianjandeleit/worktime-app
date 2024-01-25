@@ -20,8 +20,8 @@ class BasicList<T extends Recipeable> extends Recipeable {
   BasicList(
       {required this.items,
       this.selectable = false,
-      this.selectedIndex = null,
-      this.onAdd = null});
+      this.selectedIndex,
+      this.onAdd});
 
   factory BasicList.fromJson(
           Map<String, dynamic> json, T Function(Object?) fromJsonT) =>
@@ -33,20 +33,20 @@ class BasicList<T extends Recipeable> extends Recipeable {
 
   BasicList<T> buildChangedInstance(List<T> items) {
     print("changed list");
-    var new_selected_index = null;
+    int? newSelectedIndex;
     if (items.isEmpty) {
-      new_selected_index = null;
+      newSelectedIndex = null;
     } else if (items.length > this.items.length) {
-      new_selected_index = selectedIndex;
+      newSelectedIndex = selectedIndex;
     } else if (items.length < this.items.length) {
-      new_selected_index = 0;
+      newSelectedIndex = 0;
     } else {
-      new_selected_index = selectedIndex;
+      newSelectedIndex = selectedIndex;
     }
     return BasicList(
         items: items,
         selectable: selectable,
-        selectedIndex: new_selected_index,
+        selectedIndex: newSelectedIndex,
         onAdd: onAdd);
   }
 

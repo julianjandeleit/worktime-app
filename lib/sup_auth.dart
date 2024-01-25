@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_auth_ui/supabase_auth_ui.dart';
-import 'package:work_time_app/userprovider.dart';
-import 'package:provider/provider.dart' as pr;
 
 class SupAuth extends StatelessWidget {
+  const SupAuth({super.key});
+
   @override
   Widget build(BuildContext context) {
     final supabase = Supabase.instance.client;
@@ -15,7 +15,7 @@ class SupAuth extends StatelessWidget {
           children: [
             Text(supabase.auth.currentUser?.email ?? "Please log in"),
             SupaSocialsAuth(
-              socialProviders: [SocialProviders.google],
+              socialProviders: const [SocialProviders.google],
               colored: true,
               showSuccessSnackBar: true,
               redirectUrl: Uri.base.origin
@@ -35,7 +35,7 @@ class SupAuth extends StatelessWidget {
                 onPressed: () {
                   Navigator.pushNamed(context, "/");
                 },
-                child: Text("continue without login"))
+                child: const Text("continue without login"))
           ],
         )));
   }

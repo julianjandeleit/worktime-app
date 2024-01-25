@@ -1,21 +1,16 @@
 import 'dart:ui';
 
 import 'package:flutter/material.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart' as pr;
-import 'package:work_time_app/firebase_options.dart';
-import 'package:work_time_app/models/WorkSession.dart';
 import 'package:work_time_app/sup_auth.dart';
 import 'package:work_time_app/viewmodels/ProjectViewModel.dart';
-import 'models/Project.dart';
-import 'models/basic_list.dart';
 import 'userprovider.dart';
 import 'viewmodels/WorkSessionViewModel.dart';
 import 'workspace.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -44,12 +39,14 @@ void main() async {
         pr.ChangeNotifierProvider(create: (_) => WorkSessionViewModel()),
         pr.ChangeNotifierProvider(create: (_) => UserProvider(null))
       ],
-      child: WorkTimeApp(),
+      child: const WorkTimeApp(),
     ),
   );
 }
 
 class WorkTimeApp extends StatelessWidget {
+  const WorkTimeApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     final supabase = Supabase.instance.client;
@@ -82,8 +79,8 @@ class WorkTimeApp extends StatelessWidget {
       ),
       initialRoute: '/login',
       routes: {
-        '/login': (context) => SupAuth(),
-        '/': (context) => Workspace(),
+        '/login': (context) => const SupAuth(),
+        '/': (context) => const Workspace(),
       },
     );
   }

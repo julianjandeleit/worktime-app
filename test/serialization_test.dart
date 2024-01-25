@@ -1,10 +1,8 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:work_time_app/models/Project.dart';
 import 'package:work_time_app/models/RDatetime.dart';
 import 'package:work_time_app/models/WorkSession.dart';
 import 'package:work_time_app/models/basic_list.dart';
-import 'package:work_time_app/models/basic_string.dart'; // Replace with your actual import
+// Replace with your actual import
 
 void main() {
   test('Serialization and deserialization', () {
@@ -59,7 +57,7 @@ void main() {
 
     final session = WorkSession(
         startTime: RDatetime(item: DateTime.now()),
-        endTime: RDatetime(item: DateTime.now().add(Duration(hours: 1))));
+        endTime: RDatetime(item: DateTime.now().add(const Duration(hours: 1))));
 
     final sJson = session.toJson();
     // print("workSession json ${sJson}");
@@ -69,22 +67,22 @@ void main() {
     final workSessions = BasicList<WorkSession>(items: [
       WorkSession(
         startTime: RDatetime(item: DateTime.now()),
-        endTime: RDatetime(item: DateTime.now().add(Duration(hours: 1))),
+        endTime: RDatetime(item: DateTime.now().add(const Duration(hours: 1))),
       ),
       WorkSession(
         startTime: RDatetime(item: DateTime.now()),
-        endTime: RDatetime(item: DateTime.now().add(Duration(hours: 1))),
+        endTime: RDatetime(item: DateTime.now().add(const Duration(hours: 1))),
       ),
     ]);
 
     final encodedSessions = workSessions.toJson();
 
-    print("encodedSessions\n${encodedSessions}");
+    print("encodedSessions\n$encodedSessions");
     final decodedSessions = BasicList<WorkSession>.fromJson(
       encodedSessions,
       (p0) => WorkSession.fromJson(p0 as Map<String, dynamic>),
     );
 
-    print("decodedSessions\n${decodedSessions}");
+    print("decodedSessions\n$decodedSessions");
   });
 }

@@ -26,6 +26,7 @@ class WorkSession extends Recipeable {
       _$WorkSessionFromJson(json);
 
   /// Connect the generated [_$PersonToJson] function to the `toJson` method.
+  @override
   Map<String, dynamic> toJson() => _$WorkSessionToJson(this);
 
   @override
@@ -54,18 +55,18 @@ class WorkSession extends Recipeable {
   @override
   Widget buildAggregation({void Function(Recipeable p1)? onChanged}) {
     if (startTime == null) {
-      return Text("start time not set");
+      return const Text("start time not set");
     }
 
     final widgets = [
-      Align(
+      const Align(
         alignment: Alignment.center,
         child: Text(
           "Start-, Endtime",
           style: TextStyle(fontWeight: FontWeight.bold),
         ),
       ),
-      Align(
+      const Align(
         alignment: Alignment.center,
         child: Text(
           "Duration",
@@ -73,7 +74,7 @@ class WorkSession extends Recipeable {
         ),
       ),
       Container(
-        padding: EdgeInsets.only(top: 25, bottom: 25),
+        padding: const EdgeInsets.only(top: 25, bottom: 25),
         child: Column(
           mainAxisSize: MainAxisSize.min,
           mainAxisAlignment: MainAxisAlignment.center,
@@ -82,7 +83,7 @@ class WorkSession extends Recipeable {
                 "${startTime!.item.hour.toString().padLeft(2, '0')}:${startTime!.item.minute.toString().padLeft(2, '0')}"),
             endTime != null
                 ? Text(
-                    "${endTime!.item.day != startTime!.item.day ? "(" + endTime!.item.day.toString() + ".) " : ""}${endTime!.item.hour.toString().padLeft(2, '0')}:${endTime!.item.minute.toString().padLeft(2, '0')}")
+                    "${endTime!.item.day != startTime!.item.day ? "(${endTime!.item.day}.) " : ""}${endTime!.item.hour.toString().padLeft(2, '0')}:${endTime!.item.minute.toString().padLeft(2, '0')}")
                 : const Text("..."),
           ],
         ),
@@ -116,7 +117,7 @@ class WorkSession extends Recipeable {
               context: context,
               builder: (context) {
                 return AlertDialog(
-                  title: Text('Edit Work Session'),
+                  title: const Text('Edit Work Session'),
                   content: SizedBox(
                       height: 300,
                       width: 400,

@@ -13,7 +13,7 @@ BasicList<T> _$BasicListFromJson<T extends Recipeable>(
     BasicList<T>(
       items: (json['items'] as List<dynamic>).map(fromJsonT).toList(),
       selectable: json['selectable'] as bool? ?? false,
-      selectedIndex: json['selectedIndex'] as int? ?? null,
+      selectedIndex: json['selectedIndex'] as int?,
     );
 
 Map<String, dynamic> _$BasicListToJson<T extends Recipeable>(
