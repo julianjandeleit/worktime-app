@@ -15,6 +15,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
+  // AnonKey represents user with lowest level of permissions and should be okay to be public facing.
   await Supabase.initialize(
     url: "https://wudetldwulxvzcjnyjcz.supabase.co",
     anonKey:
