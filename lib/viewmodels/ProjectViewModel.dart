@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:typed_data';
 
+import 'package:download/download.dart';
 import 'package:file/memory.dart';
 import 'package:flutter/material.dart';
 import 'package:json_annotation/json_annotation.dart';
@@ -8,11 +9,43 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:work_time_app/models/WorkSession.dart';
 import 'package:work_time_app/models/basic_list.dart';
 import 'package:work_time_app/models/basic_string.dart';
+import 'package:yaml/yaml.dart';
+import 'package:yaml_writer/yaml_writer.dart';
 
 import '../models/Project.dart';
 import '../models/start_stop.dart';
 
 part 'ProjectViewModel.g.dart';
+
+List<Map<String, dynamic>> convertToTimestamps(Map<String, dynamic> project) {
+  List<Map<String, dynamic>> result = [];
+
+  // Extract workSessions from the project
+  List<dynamic> workSessions = project['workSessions']['items'];
+
+  // Iterate through workSessions and convert to desired format
+  for (int i = 0; i < workSessions.length; i++) {
+    Map<String, dynamic> session = workSessions[i];
+
+    // Convert startTime and endTime to desired format
+    String startTime = session['startTime']['item'];
+    String endTime = session['endTime']['item'];
+
+    // Add START and END events to the result list
+    result.add({'type': 'START', 'timestamp': startTime});
+    result.add({'type': 'END', 'timestamp': endTime});
+  }
+
+  return result;
+}
+
+String convertToYamlString(List<Map<String, dynamic>> convertedSessions) {
+  var yamlWriter = YamlWriter();
+  var yamlDocString = yamlWriter.write(convertedSessions);
+
+  // Convert the YamlDocument to a YAML string
+  return yamlDocString;
+}
 
 @JsonSerializable(explicitToJson: true)
 class ProjectViewModel extends ChangeNotifier {
@@ -107,6 +140,34 @@ class ProjectViewModel extends ChangeNotifier {
   void deleteProject(Project project) {
     projects.remove(project);
     notifyListeners(); // Notify listeners of the data change
+  }
+
+  Future<void> download_times() async {
+    final supabase = Supabase.instance.client;
+    //only store for valid users
+    if (supabase.auth.currentUser == null) {
+      print("current user is null");
+      return null;
+    }
+    final userID = supabase.auth.currentUser!.id;
+
+    String filename = '$userID.json';
+    try {
+      Uint8List response =
+          await supabase.storage.from('userdata').download(filename);
+      String content = String.fromCharCodes(response);
+      var data = jsonDecode(content);
+
+      var project = data["projects"][selectedProjectIndex];
+
+      var convertedSessions = convertToTimestamps(project);
+      // String jsonString = json.encode(convertedSessions);
+      String yamlString = convertToYamlString(convertedSessions);
+      download(Stream.fromIterable(yamlString.codeUnits),
+          "worktime_${_projects[selectedProjectIndex!].name.item}.yaml");
+    } catch (e) {
+      print(e);
+    }
   }
 
   static Future<ProjectViewModel?> from_user() async {

@@ -95,7 +95,14 @@ class MainWidget extends StatelessWidget {
         )),
         Flexible(
             flex: 6,
-            child: StartStopWidget(projectViewModel: projectViewModel)),
+            child: Row(children: [
+              Flexible(
+                  flex: 9,
+                  child: StartStopWidget(projectViewModel: projectViewModel)),
+              Flexible(
+                  flex: 1,
+                  child: ExportWidget(projectViewModel: projectViewModel))
+            ])),
         const Text(
           'Your Projects',
           style: TextStyle(
@@ -115,8 +122,7 @@ class MainWidget extends StatelessWidget {
               .buildAggregation(onChanged: (updated) {
             //print("top level update ${updated}");
             projectViewModel.projects = (updated as BasicList<Project>).items;
-            projectViewModel.selectedProjectIndex =
-                (updated).selectedIndex;
+            projectViewModel.selectedProjectIndex = (updated).selectedIndex;
             projectViewModel.notifyListeners();
           }),
         ),
@@ -177,5 +183,26 @@ class StartStopWidget extends StatelessWidget {
         },
       ),
     );
+  }
+}
+
+class ExportWidget extends StatelessWidget {
+  const ExportWidget({
+    super.key,
+    required this.projectViewModel,
+  });
+
+  final ProjectViewModel projectViewModel;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: IconButton(
+          icon: Icon(Icons.download),
+          onPressed: () {
+            projectViewModel.download_times();
+          },
+        ));
   }
 }
